@@ -12,6 +12,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "chalk": "^2.4.1",
+    "dotenv": "^5.0.1",
     "node-telegram-bot-api": "^0.30.0"
   },
   "devDependencies": {
@@ -19,7 +20,6 @@
     "@types/dotenv": "^4.0.3",
     "@types/node": "^10.1.2",
     "@types/node-telegram-bot-api": "^0.28.3",
-    "dotenv": "^5.0.1",
     "nodemon": "^1.17.4",
     "ts-node": "^6.0.3",
     "typescript": "^2.8.3"
