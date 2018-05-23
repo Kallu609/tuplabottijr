@@ -4,8 +4,10 @@
   "main": "src/app.ts",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon",
-    "start": "node index.js"
+    "start": "node build/app.js",
+    "build": "tsc",
+    "postinstall": "npm run build",
+    "dev": "nodemon"
   },
   "dependencies": {
     "axios": "^0.18.0",
