@@ -45,12 +45,12 @@ export default class TuplabottiJr {
   }
 
   private setToken(): void {
-    if (!process.env.BOT_TOKEN) {
-      log.error('No bot token found. Add BOT_TOKEN to \'.env\' file');
+    if (!config.botToken) {
+      log.error('No bot token found. Add it to config.ts on root directory.');
       return process.exit(1);
     }
 
-    this.token = process.env.BOT_TOKEN;
+    this.token = config.botToken;
   }
 
   private setOptions(): void {
