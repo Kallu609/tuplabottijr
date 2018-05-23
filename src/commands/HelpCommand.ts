@@ -17,7 +17,7 @@ export default class HelpCommand extends CommandBase {
         return `/${name} - ${command.helpText}`;
       }).join('\n');
 
-      this.bot.sendMessage(chatId, response, this.base.messageOptions);
+      this.sendMessage(chatId, response);
     });
 
     this.onText(/^\/help (.+)$/, (msg, args) => {
@@ -29,7 +29,7 @@ export default class HelpCommand extends CommandBase {
           `/${name} - ${commands[name].helpText}` :
           'That command does not exist.';
       
-      this.bot.sendMessage(chatId, response, this.base.messageOptions);
+      this.sendMessage(chatId, response);
     });
   }
 }

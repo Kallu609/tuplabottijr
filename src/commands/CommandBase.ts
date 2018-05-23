@@ -15,6 +15,10 @@ export default class CommandBase {
     return (match) ? match.slice(1) : [];
   }
   
+  sendMessage(chatId: number, text: string): void {
+    this.bot.sendMessage(chatId, text, this.base.messageOptions);
+  }
+
   onText(regexp: RegExp, callback: ((msg: TelegramBot.Message, match: Array<string>) => void)): void {
     this.bot.onText(regexp, (msg, match) => {
       const now =  Math.floor(Date.now() / 1000);
@@ -24,7 +28,7 @@ export default class CommandBase {
         const args = this.parseArguments(match);
 
         log.info(
-          `Command '${this.constructor.name}' triggered.\n` +
+          `'${this.constructor.name}' triggered.\n` +
           `Arguments: [${ args.join(', ') }]\n` +
           `From: ${ msg.chat.first_name }.\n` +
           `Chat ID: ${ msg.chat.id }.`

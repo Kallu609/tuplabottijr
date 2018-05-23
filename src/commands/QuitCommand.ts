@@ -10,8 +10,9 @@ export default class QuitCommand extends CommandBase {
   eventHandler(): void {
     this.onText(/\/(quit|exit)/, (msg, match) => {
       const chatId = msg.chat.id;
-
-      this.bot.sendMessage(chatId, 'Bye!', this.base.messageOptions);
+      const response = 'Bye, see you!';
+      
+      this.sendMessage(chatId, response);
       this.base.stop();
     });
   }
