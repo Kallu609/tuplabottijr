@@ -31,9 +31,7 @@ export default class PriceCommand extends CommandBase {
             }).join('\n');
 
           this.sendMessage(chatId, response);
-          return;
         }
-        this.sendMessage(chatId, 'No ei ollu');
       }
     });
   }
