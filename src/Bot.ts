@@ -1,6 +1,6 @@
 
 import * as TelegramBot from 'node-telegram-bot-api';
-import { ConstructorOptions } from 'node-telegram-bot-api';
+import { ConstructorOptions, SendMessageOptions } from 'node-telegram-bot-api';
 import config from '../config';
 import CommandHandler from './commands/CommandHandler';
 import log from './lib/logging';
@@ -10,7 +10,7 @@ export default class TuplabottiJr {
   token: string;
   options: ConstructorOptions;
   commands: CommandHandler;
-  messageOptions: TelegramBot.SendMessageOptions;
+  messageOptions: SendMessageOptions;
 
   constructor() {
     this.create();
