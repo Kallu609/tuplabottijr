@@ -22,7 +22,7 @@ export function read(filename: string): string {
   return content;
 }
 
-export function upToDate(filename: string): boolean {
+export function upToDate(filename: string, lifespan: number): boolean {
   const filepath = path.join(CACHE_DIR, `${filename}.json`);
 
   if (!fs.existsSync(filepath)) {
@@ -34,5 +34,5 @@ export function upToDate(filename: string): boolean {
     Math.floor(Date.now() / 1000) -
     Math.floor(Number(lastModified) / 1000);
 
-  return deltaTime < config.coinlistLifespan;
+  return deltaTime < lifespan;
 }

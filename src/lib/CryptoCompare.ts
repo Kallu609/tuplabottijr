@@ -41,7 +41,9 @@ export default class CryptoCompare {
   }
 
   async getCoinList(): Promise<string[]> {
-    if (cache.upToDate('coinlist')) {
+    const upToDate = cache.upToDate('coinlist', config.coinlistLifespan);
+
+    if (upToDate) {
       log.info(`Loading list of cryptocurrencies from cache`);
       return JSON.parse(cache.read('coinlist'));
     }
