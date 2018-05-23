@@ -35,6 +35,7 @@ export default class TuplabottiJr {
   stop(): void {
     this.bot.stopPolling();
     log.info('Bot stopped');
+    process.exit();
   }
 
   private eventHandler(): void {

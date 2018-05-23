@@ -12,7 +12,7 @@ export default class PriceCommand extends CommandBase {
     this.eventHandler();
   }
 
-  eventHandler(): void {
+  eventHandler() {
     this.onText(/^\/price (\w+)$/, async (msg, args) => {
       const chatId = msg.chat.id;
 
@@ -20,17 +20,20 @@ export default class PriceCommand extends CommandBase {
         const crypto = args[0].toUpperCase();
         
         if (this.api.coinlist.includes(crypto)) {
+          const message = await this.sendMessage(chatId, '_Ladataan..._');
           const json = await this.api.fetchPrices([crypto]);
           const prices = json[crypto];
 
           const response = 
             `*Prices for* \`1 ${ crypto }\`\n` + 
             Object.keys(prices).map(currency => {
+
               const price = prices[currency].toFixed(2);
               return `\`${ currency }: ${ price }\``;
-            }).join('\n');
 
-          this.sendMessage(chatId, response);
+            }).join('\n');
+          
+          this.editMessage(message, response);
         }
       }
     });

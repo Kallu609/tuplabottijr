@@ -15,8 +15,20 @@ export default class CommandBase {
     return (match) ? match.slice(1) : [];
   }
   
-  sendMessage(chatId: number, text: string): void {
-    this.bot.sendMessage(chatId, text, this.base.messageOptions);
+  async sendMessage(chatId: number, text: string): Promise<TelegramBot.Message> {
+    const message = await this.bot.sendMessage(chatId, text, this.base.messageOptions);
+    return message as TelegramBot.Message;
+  }
+
+  async editMessage(message: TelegramBot.Message, newText: string): Promise<TelegramBot.Message> {
+    const options = {
+      chat_id: message.chat.id,
+      message_id: message.message_id,
+      parse_mode: this.base.messageOptions.parse_mode
+    };
+
+    const newMessage = await this.bot.editMessageText(newText, options);
+    return newMessage as TelegramBot.Message;
   }
 
   onText(regexp: RegExp, callback: ((msg: TelegramBot.Message, match: Array<string>) => void)): void {
@@ -26,12 +38,18 @@ export default class CommandBase {
 
       if (deltaSeconds < config.commandTimeout) {
         const args = this.parseArguments(match);
+        
+        const usersName =
+          (msg.chat.type === 'private') ?
+          `(${ msg.chat.first_name ? msg.chat.first_name : '' }` + 
+          `${ msg.chat.last_name ? msg.chat.last_name : '' })`
+          : '';
 
         log.info(
           `'${this.constructor.name}' triggered.\n` +
           `Arguments: [${ args.join(', ') }]\n` +
-          `From: ${ msg.chat.first_name }.\n` +
-          `Chat ID: ${ msg.chat.id }.`
+          `User:   ${ msg.chat.id } ${ usersName }\n` +
+          `Chat ID:   ${ msg.chat.id }.`
         );
 
         callback(msg, args);
