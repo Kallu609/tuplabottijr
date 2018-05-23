@@ -3,17 +3,26 @@ import * as TelegramBot from 'node-telegram-bot-api';
 import { ConstructorOptions, SendMessageOptions } from 'node-telegram-bot-api';
 import config from '../config';
 import CommandHandler from './commands/CommandHandler';
+import CryptoCompare from './lib/CryptoCompare';
 import log from './lib/logging';
 
 export default class TuplabottiJr {
   bot: TelegramBot;
   commands: CommandHandler;
-
+  cryptoAPI: CryptoCompare;
+  
   token: string;
   options: ConstructorOptions;
   messageOptions: SendMessageOptions;
 
   constructor() {
+    this.init();
+  }
+
+  async init(): Promise<void> {
+    this.cryptoAPI = new CryptoCompare();
+    await this.cryptoAPI.init();
+
     this.create();
     this.start();
   }
@@ -29,9 +38,9 @@ export default class TuplabottiJr {
   }
 
   private eventHandler(): void {
-    this.bot.on('polling_error', error => log.error(error.code));
-    this.bot.on('webhook_error', error => log.error(error.code));
-    this.bot.on('error', error => log.error(error.code));
+    this.bot.on('polling_error', error => log.error(`polling_error: ${error.code}`));
+    this.bot.on('webhook_error', error => log.error(`webhook_error: ${error.code}`));
+    this.bot.on('error', error => log.error(`error: ${error.code}`));
   }
 
   private create(): void {

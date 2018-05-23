@@ -8,10 +8,12 @@
     "start": "ts-node ./src/app.ts"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "chalk": "^2.4.1",
     "node-telegram-bot-api": "^0.30.0"
   },
   "devDependencies": {
+    "@types/axios": "^0.14.0",
     "@types/dotenv": "^4.0.3",
     "@types/node": "^10.1.2",
     "@types/node-telegram-bot-api": "^0.28.3",
