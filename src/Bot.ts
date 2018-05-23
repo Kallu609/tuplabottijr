@@ -7,9 +7,10 @@ import log from './lib/logging';
 
 export default class TuplabottiJr {
   bot: TelegramBot;
+  commands: CommandHandler;
+  
   token: string;
   options: ConstructorOptions;
-  commands: CommandHandler;
   messageOptions: SendMessageOptions;
 
   constructor() {
