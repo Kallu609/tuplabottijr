@@ -12,30 +12,39 @@ export default class PriceCommand extends CommandBase {
     this.eventHandler();
   }
 
-  eventHandler() {
-    this.onText(/^\/price (\w+)$/, async (msg, args) => {
+  eventHandler(): void {
+    this.onText(/^\/price/, async (msg, args) => {
       const chatId = msg.chat.id;
 
-      if (args.length === 1) {
-        const crypto = args[0].toUpperCase();
-        
-        if (this.api.coinlist.includes(crypto)) {
-          const message = await this.sendMessage(chatId, '_Ladataan..._');
-          const json = await this.api.fetchPrices([crypto]);
-          const prices = json[crypto];
-
-          const response = 
-            `*Prices for* \`1 ${ crypto }\`\n` + 
-            Object.keys(prices).map(currency => {
-
-              const price = prices[currency].toFixed(2);
-              return `\`${ currency }: ${ price }\``;
-
-            }).join('\n');
-          
-          this.editMessage(message, response);
-        }
+      if (args.length === 0) {
+        return this.showHelp(chatId);
       }
+
+      const cryptos = args
+          .filter(crypto => this.api.coinlist.includes(crypto.toUpperCase()))
+          .map(crypto => crypto.toUpperCase());
+      
+      if (!cryptos.length) {
+        return this.sendMessage(chatId, 'No cryptocurrencies found');  
+      }
+
+      const message = await this.sendMessage(chatId, '_Loading..._');
+      const prices = await this.api.fetchPrices(cryptos);
+
+      const response = cryptos.map(crypto => {
+        const fiatPrices = prices[crypto];
+
+        return `*Fiat prices for* \`1 ${ crypto }\`\n` +
+          Object.keys(fiatPrices)
+            .map(fiatCurrency => {
+              const fiatPrice = fiatPrices[fiatCurrency].toFixed(2);
+              return `\`${ fiatCurrency }: ${ fiatPrice }\``;
+          })
+          .join('\n');
+      })
+      .join('\n\n');
+
+      this.editMessage(message, response);
     });
   }
 }

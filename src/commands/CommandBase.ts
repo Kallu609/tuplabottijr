@@ -1,26 +1,36 @@
+import { Message } from 'node-telegram-bot-api';
 import * as TelegramBot from 'node-telegram-bot-api';
 import config from '../../config';
 import TuplabottiJr from '../Bot';
 import log from '../lib/logging';
+import commands from './Commands';
 
 export default class CommandBase {
   bot: TelegramBot;
-  regexp: RegExp;
+  name: string;
+  helpText: string;
+  helpArgs: string;
+  hidden: boolean;
 
   constructor(public base: TuplabottiJr) {
     this.bot = base.bot;
+    this.hidden = false;
   }
   
-  private parseArguments(match: RegExpExecArray | null): Array<string> {
-    return (match) ? match.slice(1) : [];
+  private parseArguments(message: string | undefined): Array<string> {
+    if (message) {
+      return message.split(' ').slice(1);
+    }
+
+    return [];
   }
   
-  async sendMessage(chatId: number, text: string): Promise<TelegramBot.Message> {
+  async sendMessage(chatId: number, text: string): Promise<Message> {
     const message = await this.bot.sendMessage(chatId, text, this.base.messageOptions);
-    return message as TelegramBot.Message;
+    return message as Message;
   }
 
-  async editMessage(message: TelegramBot.Message, newText: string): Promise<TelegramBot.Message> {
+  async editMessage(message: Message, newText: string): Promise<Message> {
     const options = {
       chat_id: message.chat.id,
       message_id: message.message_id,
@@ -28,32 +38,41 @@ export default class CommandBase {
     };
 
     const newMessage = await this.bot.editMessageText(newText, options);
-    return newMessage as TelegramBot.Message;
+    return newMessage as Message;
   }
 
-  onText(regexp: RegExp, callback: ((msg: TelegramBot.Message, match: Array<string>) => void)): void {
+  onText(regexp: RegExp, callback: ((msg: Message, match: Array<string>) => void)): void {
     this.bot.onText(regexp, (msg, match) => {
       const now =  Math.floor(Date.now() / 1000);
       const deltaSeconds = now - msg.date;
 
-      if (deltaSeconds < config.commandTimeout) {
-        const args = this.parseArguments(match);
-        
-        const usersName =
-          (msg.chat.type === 'private') ?
-          `(${ msg.chat.first_name ? msg.chat.first_name : '' }` + 
-          `${ msg.chat.last_name ? msg.chat.last_name : '' })`
-          : '';
-
-        log.info(
-          `'${this.constructor.name}' triggered.\n` +
-          `Arguments: [${ args.join(', ') }]\n` +
-          `User:   ${ msg.chat.id } ${ usersName }\n` +
-          `Chat ID:   ${ msg.chat.id }.`
-        );
-
-        callback(msg, args);
+      if (deltaSeconds > config.commandTimeout) {
+        return;
       }
+
+      const args = this.parseArguments(msg.text);
+      
+      const getFullname = () => {
+        if (msg.chat.type === 'private') {
+          const fullName = [msg.chat.first_name, msg.chat.last_name].join(' ').trim();
+          return `(${fullName})`;
+        }
+        
+        return '';
+      };
+
+      log.info(
+        `'${ this.constructor.name }' triggered.\n` +
+        `Arguments: [${ args.join(', ') }]\n` +
+        `User: ${ msg.chat.id } ${ getFullname() }\n` +
+        `Chat: ${ msg.chat.id }`
+      );
+
+      callback(msg, args);
     });
+  }
+
+  showHelp(chatId: number): void {
+    this.base.commands.help.getSingleHelpText(chatId, this.name);
   }
 }

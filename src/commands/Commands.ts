@@ -4,31 +4,36 @@ import JekkuCommand from './JekkuCommand';
 import PriceCommand from './PriceCommand';
 import QuitCommand from './QuitCommand';
 
-const commands: ICommands = {
-  help: {
-    class:    HelpCommand,
-    helpText: 'Show help text',
+const commands: Array<ICommand> = [
+  {
+    classRef:  HelpCommand,
+    name:      'help',
+    helpText:  'Show help text',
+    helpArgs:  '[command]'
   },
-
-  echo: {
-    class:    EchoCommand,
-    helpText: 'Echoes to you'
+  {
+    classRef:  EchoCommand,
+    name:      'echo',
+    helpText:  'Echoes to you',
+    hidden:    true
   },
-
-  price: {
-    class:    PriceCommand,
-    helpText: 'Shows price of cryptocurrency'
+  {
+    classRef:  PriceCommand,
+    name:      'price',
+    helpText:  'Shows price of cryptocurrencies',
+    helpArgs:  '<crypto(s)>'
   },
-
-  jekku: {
-    class:    JekkuCommand,
-    helpText: 'Jekuta kaikkia'
+  {
+    classRef:  JekkuCommand,
+    name:      'jekku',
+    helpText:  'Jekuta kaikkia',
+    hidden:    true
   },
-
-  quit: {
-    class:    QuitCommand,
-    helpText: 'Quit bot'
+  {
+    classRef:  QuitCommand,
+    name:      'quit',
+    helpText:  'Quit bot',
+    hidden:    true
   }
-};
-
+];
 export default commands;

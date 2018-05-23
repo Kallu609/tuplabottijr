@@ -77,7 +77,7 @@ export default class CryptoCompare {
     this.prices = response.data;
   }
 
-  async fetchPrices(cryptoCurrencies: Array<string>): Promise<void> {
+  async fetchPrices(cryptoCurrencies: Array<string>): Promise<object> {
     const response =
       await axios.get(API_ENDPOINTS.pricemulti, {
         params: {

@@ -8,11 +8,11 @@ export default class QuitCommand extends CommandBase {
   }
 
   eventHandler(): void {
-    this.onText(/\/quit/, (msg, args) => {
+    this.onText(/\/quit/, async (msg, args) => {
       const chatId = msg.chat.id;
       const response = 'No vittu morjes xD';
 
-      this.sendMessage(chatId, response);
+      await this.sendMessage(chatId, response);
       this.base.stop();
     });
   }

@@ -23,21 +23,6 @@ export default class JekkuCommand extends CommandBase {
     super(base);
     this.eventHandler();
   }
-
-  async updateMessage(): Promise<void> {
-    const frame = frames[this.frameCounter];
-
-    if (this.frameCounter >= frames.length) {
-      return;
-    }
-
-    this.oldMessage = await this.editMessage(this.oldMessage, frame);
-
-    setTimeout(() => {
-      this.frameCounter++;
-      this.updateMessage();
-    }, 500);
-  }
   
   eventHandler() {
     this.onText(/^\/jekku$/, async (msg, match) => {
@@ -47,5 +32,19 @@ export default class JekkuCommand extends CommandBase {
       this.frameCounter = 1;
       this.updateMessage();
     });
+  }
+  
+  async updateMessage(): Promise<void> {
+    if (this.frameCounter >= frames.length) {
+      return;
+    }
+
+    const frame = frames[this.frameCounter];
+    this.oldMessage = await this.editMessage(this.oldMessage, frame);
+
+    setTimeout(() => {
+      this.frameCounter++;
+      this.updateMessage();
+    }, 500);
   }
 }
