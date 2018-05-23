@@ -29,7 +29,7 @@ export default class TuplabottiJr {
 
   start(): void {
     this.bot.startPolling();
-    log.info('Bot started');
+    log.info('Bot started! :)');
   }
 
   stop(): void {
