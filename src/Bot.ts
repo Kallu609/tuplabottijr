@@ -10,6 +10,7 @@ export default class TuplabottiJr {
   token: string;
   options: ConstructorOptions;
   commands: CommandHandler;
+  messageOptions: TelegramBot.SendMessageOptions;
 
   constructor() {
     this.create();
@@ -26,12 +27,19 @@ export default class TuplabottiJr {
     log.info('Bot stopped');
   }
 
+  private eventHandler(): void {
+    this.bot.on('polling_error', error => log.error(error));
+    this.bot.on('webhook_error', error => log.error(error));
+    this.bot.on('error', error => log.error(error));
+  }
+
   private create(): void {
     this.setToken();
     this.setOptions();
     
     this.bot = new TelegramBot(this.token, this.options);
-    this.commands = new CommandHandler(this.bot);
+    this.eventHandler();
+    this.commands = new CommandHandler(this);
   }
 
   private setToken(): void {
@@ -45,5 +53,8 @@ export default class TuplabottiJr {
 
   private setOptions(): void {
     this.options = {};
+    this.messageOptions = {
+      parse_mode: 'Markdown'
+    };
   }
 }

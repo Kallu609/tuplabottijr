@@ -2,7 +2,7 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es5",
-    "lib": ["es7", "es2017.object"],
+    "lib": ["es7", "es2017.object", "es2018"],
     "sourceMap": true,
     "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,

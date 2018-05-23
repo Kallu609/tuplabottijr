@@ -1,25 +1,15 @@
-import { EventEmitter } from 'events';
-import * as TelegramBot from 'node-telegram-bot-api';
-import EchoCommand from './Echo';
-
-const commands = [
-  EchoCommand
-];
+import TuplabottiJr from '../Bot';
+import commands from './Commands';
 
 export default class CommandHandler {
-  bot: TelegramBot;
-  eventEmitter: EventEmitter;
-
-  constructor(bot: TelegramBot) {
-    this.bot = bot;
-    this.eventEmitter = new EventEmitter();
-
+  constructor(public base: TuplabottiJr) {
+    this.base = base;
     this.initCommands();
   }
 
   initCommands(): void {
-    for (const Command of commands) {
-      new Command(this.bot);
+    for (const command of Object.values(commands)) {
+      new command.class(this.base);
     }
   }
 }

@@ -1,16 +1,16 @@
-import * as TelegramBot from 'node-telegram-bot-api';
+import TuplabottiJr from '../Bot';
 import CommandBase from './CommandBase';
 
 export default class EchoCommand extends CommandBase {
-  constructor(bot: TelegramBot) {
-    super(bot);
+  constructor(base: TuplabottiJr) {
+    super(base);
     this.eventHandler();
   }
 
   eventHandler(): void {
     this.bot.onText(/\/echo/, (msg, match) => {
       const chatId = msg.chat.id;
-      this.bot.sendMessage(chatId, 'Hello!');
+      this.bot.sendMessage(chatId, 'Hello!', this.base.messageOptions);
       
       this.commandTriggered(msg);
     });
