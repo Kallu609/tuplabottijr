@@ -11,23 +11,26 @@ export default class CommandBase {
     this.bot = base.bot;
   }
   
-  parseArguments(match: RegExpExecArray | null): Array<string> {
+  private parseArguments(match: RegExpExecArray | null): Array<string> {
     return (match) ? match.slice(1) : [];
   }
   
-  onText(regexp: RegExp, callback: ((msg: TelegramBot.Message, match: RegExpExecArray | null) => void)): void {
+  onText(regexp: RegExp, callback: ((msg: TelegramBot.Message, match: Array<string>) => void)): void {
     this.bot.onText(regexp, (msg, match) => {
       const now =  Math.floor(Date.now() / 1000);
       const deltaSeconds = now - msg.date;
 
       if (deltaSeconds < config.commandTimeout) {
+        const args = this.parseArguments(match);
+
         log.info(
           `Command '${this.constructor.name}' triggered.\n` +
-          `From: ${msg.chat.first_name}.\n` +
-          `Chat ID: ${msg.chat.id}.`
+          `Arguments: [${ args.join(', ') }]\n` +
+          `From: ${ msg.chat.first_name }.\n` +
+          `Chat ID: ${ msg.chat.id }.`
         );
 
-        callback(msg, match);
+        callback(msg, args);
       }
     });
   }

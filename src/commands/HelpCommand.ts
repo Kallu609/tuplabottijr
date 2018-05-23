@@ -20,9 +20,8 @@ export default class HelpCommand extends CommandBase {
       this.bot.sendMessage(chatId, response, this.base.messageOptions);
     });
 
-    this.onText(/^\/help (.+)$/, (msg, match) => {
+    this.onText(/^\/help (.+)$/, (msg, args) => {
       const chatId = msg.chat.id;
-      const args = this.parseArguments(match);
       const name = args[0].toLowerCase();
 
       const response =
