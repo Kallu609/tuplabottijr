@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon",
-    "start": "ts-node ./src/app.ts"
+    "start": "node index.js"
   },
   "dependencies": {
     "axios": "^0.18.0",
