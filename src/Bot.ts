@@ -8,7 +8,7 @@ import log from './lib/logging';
 export default class TuplabottiJr {
   bot: TelegramBot;
   commands: CommandHandler;
-  
+
   token: string;
   options: ConstructorOptions;
   messageOptions: SendMessageOptions;
@@ -29,9 +29,9 @@ export default class TuplabottiJr {
   }
 
   private eventHandler(): void {
-    this.bot.on('polling_error', error => log.error(error));
-    this.bot.on('webhook_error', error => log.error(error));
-    this.bot.on('error', error => log.error(error));
+    this.bot.on('polling_error', error => log.error(error.code));
+    this.bot.on('webhook_error', error => log.error(error.code));
+    this.bot.on('error', error => log.error(error.code));
   }
 
   private create(): void {
@@ -40,6 +40,7 @@ export default class TuplabottiJr {
     
     this.bot = new TelegramBot(this.token, this.options);
     this.eventHandler();
+
     this.commands = new CommandHandler(this);
   }
 
@@ -53,7 +54,12 @@ export default class TuplabottiJr {
   }
 
   private setOptions(): void {
-    this.options = {};
+    this.options = {
+      polling: {
+        autoStart: false
+      }
+    };
+
     this.messageOptions = {
       parse_mode: 'Markdown'
     };

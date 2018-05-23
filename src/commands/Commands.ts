@@ -1,5 +1,6 @@
-import EchoCommand from './Echo';
-import HelpCommand from './Help';
+import EchoCommand from './EchoCommand';
+import HelpCommand from './HelpCommand';
+import QuitCommand from './QuitCommand';
 
 const commands: ICommands = {
   help: {
@@ -10,6 +11,11 @@ const commands: ICommands = {
   echo: {
     class:    EchoCommand,
     helpText: 'Echoes to you'
+  },
+
+  quit: {
+    class:    QuitCommand,
+    helpText: 'Quit bot'
   }
 };
 

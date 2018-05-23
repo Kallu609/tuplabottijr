@@ -8,11 +8,9 @@ export default class EchoCommand extends CommandBase {
   }
 
   eventHandler(): void {
-    this.bot.onText(/\/echo/, (msg, match) => {
+    this.onText(/\/echo/, (msg, match) => {
       const chatId = msg.chat.id;
       this.bot.sendMessage(chatId, 'Hello!', this.base.messageOptions);
-      
-      this.commandTriggered(msg);
     });
   }
 }

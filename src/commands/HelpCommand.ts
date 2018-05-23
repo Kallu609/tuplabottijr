@@ -9,7 +9,7 @@ export default class HelpCommand extends CommandBase {
   }
 
   eventHandler(): void {
-    this.bot.onText(/^\/help$/, (msg, match) => {
+    this.onText(/^\/help$/, (msg, match) => {
       const chatId = msg.chat.id;
 
       const response = Object.keys(commands).map(name => {
@@ -18,10 +18,9 @@ export default class HelpCommand extends CommandBase {
       }).join('\n');
 
       this.bot.sendMessage(chatId, response, this.base.messageOptions);
-      this.commandTriggered(msg);
     });
 
-    this.bot.onText(/^\/help (.+)$/, (msg, match) => {
+    this.onText(/^\/help (.+)$/, (msg, match) => {
       const chatId = msg.chat.id;
       const args = this.parseArguments(match);
       const name = args[0].toLowerCase();
