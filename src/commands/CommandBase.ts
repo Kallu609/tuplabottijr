@@ -2,9 +2,7 @@ import * as TelegramBot from 'node-telegram-bot-api';
 import log from '../lib/logging';
 
 export default class CommandBase {
-  bot: TelegramBot;
-
-  constructor(bot: TelegramBot) {
+  constructor(public bot: TelegramBot) {
     this.bot = bot;
   }
 
