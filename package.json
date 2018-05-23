@@ -8,14 +8,13 @@
     "start": "ts-node ./src/app.ts"
   },
   "dependencies": {
-    "@types/node-telegram-bot-api": "^0.28.3",
     "chalk": "^2.4.1",
-    "node-telegram-bot-api": "^0.30.0",
-    "telegraf": "^3.21.1"
+    "node-telegram-bot-api": "^0.30.0"
   },
   "devDependencies": {
     "@types/dotenv": "^4.0.3",
     "@types/node": "^10.1.2",
+    "@types/node-telegram-bot-api": "^0.28.3",
     "dotenv": "^5.0.1",
     "nodemon": "^1.17.4",
     "ts-node": "^6.0.3",
