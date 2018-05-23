@@ -1,5 +1,6 @@
 import EchoCommand from './EchoCommand';
 import HelpCommand from './HelpCommand';
+import PriceCommand from './PriceCommand';
 import QuitCommand from './QuitCommand';
 
 const commands: ICommands = {
@@ -11,6 +12,11 @@ const commands: ICommands = {
   echo: {
     class:    EchoCommand,
     helpText: 'Echoes to you'
+  },
+
+  price: {
+    class:    PriceCommand,
+    helpText: 'Shows price of cryptocurrency'
   },
 
   quit: {
