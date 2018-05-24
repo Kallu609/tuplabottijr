@@ -40,7 +40,8 @@ const commands: Array<ICommand> = [
     classRef:  QuitCommand,
     name:      'quit',
     helpText:  'Quit bot',
-    hidden:    true
+    hidden:    true,
+    disabled:  true
   }
 ];
 export default commands;

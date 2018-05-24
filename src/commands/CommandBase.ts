@@ -11,6 +11,7 @@ export default class CommandBase {
   helpText: string;
   helpArgs: string;
   hidden: boolean;
+  disabled: boolean;
 
   constructor(public base: TuplabottiJr) {
     this.bot = base.bot;
@@ -42,7 +43,9 @@ export default class CommandBase {
   }
 
   onText(regexp: RegExp, callback: ((msg: Message, match: Array<string>) => void)): void {
-    this.bot.onText(regexp, (msg, match) => {
+    this.bot.onText(regexp, (msg, match) => {    
+      if (this.disabled) return;
+      
       const now =  Math.floor(Date.now() / 1000);
       const deltaSeconds = now - msg.date;
 

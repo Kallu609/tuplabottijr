@@ -7,6 +7,7 @@ interface ICommand {
   helpText:  string;
   helpArgs?: string;
   hidden?:   boolean;
+  disabled?: boolean;
 }
 
 interface ISettings {
