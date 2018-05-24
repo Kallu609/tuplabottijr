@@ -1,5 +1,5 @@
 import TuplabottiJr from '../Bot';
-import CryptoCompare from '../lib/CryptoCompare';
+import CryptoCompare from '../lib/api/CryptoCompare';
 import CommandBase from './CommandBase';
 
 export default class PriceCommand extends CommandBase {

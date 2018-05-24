@@ -1,7 +1,7 @@
 import axios from 'axios';
-import config from '../../config';
+import config from '../../../config';
+import log from '../logging';
 import * as cache from './cache';
-import log from './logging';
 
 const API_ENDPOINTS = {
   coinlist:   'https://www.cryptocompare.com/api/data/coinlist/',
@@ -15,7 +15,8 @@ export default class CryptoCompare {
   prices: object;
 
   constructor() {
-    this.watchedCurrencies = ['ETH', 'BTC'];
+    // TODO: Load/save currencies from/to file.
+    this.watchedCurrencies = [];
     this.fiatCurrencies = config.fiatCurrencies;
   }
 

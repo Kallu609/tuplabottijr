@@ -7,7 +7,6 @@ import Bot from './Bot';
 new Bot();
 
 // Heroku workaround
-// tslint:disable-next-line:no-any
 http.createServer((req: any, res: any) => {
   res.writeHead(200, {'Content-Type': 'text/plain'});
   res.write('Hello World!');

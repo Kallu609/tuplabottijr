@@ -3,13 +3,15 @@ import * as TelegramBot from 'node-telegram-bot-api';
 import { ConstructorOptions, SendMessageOptions } from 'node-telegram-bot-api';
 import config from '../config';
 import CommandHandler from './commands/CommandHandler';
-import CryptoCompare from './lib/CryptoCompare';
+import CryptoCompare from './lib/api/CryptoCompare';
+import OpenWeatherMap from './lib/api/OpenWeatherMap';
 import log from './lib/logging';
 
 export default class TuplabottiJr {
   bot: TelegramBot;
   commands: CommandHandler;
   cryptoAPI: CryptoCompare;
+  weatherAPI: OpenWeatherMap;
   
   token: string;
   options: ConstructorOptions;
@@ -21,6 +23,8 @@ export default class TuplabottiJr {
 
   async init(): Promise<void> {
     this.cryptoAPI = new CryptoCompare();
+    this.weatherAPI = new OpenWeatherMap();
+
     await this.cryptoAPI.init();
 
     this.create();
