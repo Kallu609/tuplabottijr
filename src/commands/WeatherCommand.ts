@@ -1,4 +1,5 @@
 
+import axios from 'axios';
 import * as schedule from 'node-schedule';
 import config from '../../config';
 import TuplabottiJr from '../Bot';
@@ -73,14 +74,28 @@ export default class WeatherCommand extends CommandBase {
 
   async sendWeatherData(chatId: number): Promise<void> {
     const message = await this.sendMessage(chatId, 'Loading weather data...');
-    const response = await this.api.getWeatherReport();
-    this.editMessage(message, response);
+    const weatherReport = await this.api.getWeatherReport();
+    this.editMessage(message, weatherReport);
   }
 
   scheduler(): void {
-    schedule.scheduleJob(config.weatherCron, () => {
+    schedule.scheduleJob(config.weatherCron, async () => {
+      const weatherReport = await this.api.getWeatherReport();
+
       for (const chatId of this.chatsEnabled) {
-        this.sendWeatherData(chatId);
+        // Vitsikäs
+        if (chatId === -161953743) {
+          await this.sendMessage(chatId, '_Hyvää huomenta pojat :3_');
+
+          const response = await axios.get('http://thecatapi.com/api/images/get');
+          const redirectUrl = response.request.res.responseUrl;
+  
+          await this.bot.sendPhoto(chatId, redirectUrl, {
+            caption: 'Tän päivän kissekuva'
+          });
+        }
+        
+        await this.sendMessage(chatId, weatherReport);
       }
     });
   }

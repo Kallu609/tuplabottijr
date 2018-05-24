@@ -1,5 +1,5 @@
 node_modules/
 .vscode/
 .env
-src/lib/cache/*
+src/lib/api/cache/*
 build
