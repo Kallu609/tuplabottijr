@@ -63,14 +63,12 @@ export default class WeatherCommand extends CommandBase {
 
   loadEnabledChats(): void {
     const data = settings.read();
-    console.log(data);
 
     if (data.weatherCommand) {
-      console.log('YES CHATS');
       this.chatsEnabled = data.weatherCommand.chatsEnabled;
       return;
     }
-    console.log('NO CHATS');
+
     this.chatsEnabled = [];
   }
 
