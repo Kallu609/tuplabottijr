@@ -1,4 +1,4 @@
-import DateCommand from './DateCommand';
+import DebugCommand from './DebugCommand';
 import EchoCommand from './EchoCommand';
 import HelpCommand from './HelpCommand';
 import JekkuCommand from './JekkuCommand';
@@ -38,8 +38,8 @@ const commands: Array<ICommand> = [
     helpArgs:  '[enable | disable]'
   },
   {
-    classRef:  DateCommand,
-    name:      'date',
+    classRef:  DebugCommand,
+    name:      'debug',
     helpText:  'Show date',
     hidden:    true,
   },
