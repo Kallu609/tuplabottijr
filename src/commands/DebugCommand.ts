@@ -24,8 +24,8 @@ export default class DebugCommand extends CommandBase {
         'None';
 
       const debugText =
-        `Current date: ${ (new Date).toString() }` +
-        `Weather reports enabled: ${ chatEnabled }` +
+        `Current date: ${ (new Date).toString() }\n` +
+        `Weather reports enabled: ${ chatEnabled }\n` +
         `Watched cryptos: ${ watchedCryptos }`;
 
       this.sendMessage(chatId, debugText);
