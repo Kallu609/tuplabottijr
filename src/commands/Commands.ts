@@ -1,3 +1,4 @@
+import DateCommand from './DateCommand';
 import EchoCommand from './EchoCommand';
 import HelpCommand from './HelpCommand';
 import JekkuCommand from './JekkuCommand';
@@ -35,6 +36,12 @@ const commands: Array<ICommand> = [
     name:      'weather',
     helpText:  'Show weather for today',
     helpArgs:  '[enable | disable]'
+  },
+  {
+    classRef:  DateCommand,
+    name:      'date',
+    helpText:  'Show date',
+    hidden:    true,
   },
   {
     classRef:  QuitCommand,
