@@ -1,3 +1,4 @@
+import * as schedule from 'node-schedule-tz';
 import TuplabottiJr from '../Bot';
 import * as settings from '../lib/settings';
 import CommandBase from './CommandBase';

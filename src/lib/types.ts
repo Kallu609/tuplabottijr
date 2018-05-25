@@ -1,3 +1,4 @@
+declare module 'node-schedule-tz';
 
 interface IType extends Function {}
 
