@@ -1,13 +1,13 @@
 import TuplabottiJr from '../Bot';
-import OpenWeatherMap from '../lib/api/OpenWeatherMap';
+import TrafficCameras from '../lib/api/TrafficCameras';
 import CommandBase from './CommandBase';
 
 export default class TrafficCommand extends CommandBase {
-  api: OpenWeatherMap;
+  api: TrafficCameras;
 
   constructor(base: TuplabottiJr) {
     super(base);
-    this.api = this.base.weatherAPI;
+    this.api = this.base.trafficCameraAPI;
     
     this.eventHandler();
   }

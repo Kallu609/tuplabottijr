@@ -5,17 +5,20 @@ import config from '../config';
 import CommandHandler from './commands/CommandHandler';
 import CryptoCompare from './lib/api/CryptoCompare';
 import OpenWeatherMap from './lib/api/OpenWeatherMap';
+import TrafficCameras from './lib/api/TrafficCameras';
 import log from './lib/logging';
 
 export default class TuplabottiJr {
   bot: TelegramBot;
   commands: CommandHandler;
-  cryptoAPI: CryptoCompare;
-  weatherAPI: OpenWeatherMap;
   
   token: string;
   options: ConstructorOptions;
   messageOptions: SendMessageOptions;
+
+  cryptoAPI: CryptoCompare;
+  weatherAPI: OpenWeatherMap;
+  trafficCameraAPI: TrafficCameras;
 
   constructor() {
     this.init();
@@ -24,6 +27,7 @@ export default class TuplabottiJr {
   async init(): Promise<void> {
     this.cryptoAPI = new CryptoCompare();
     this.weatherAPI = new OpenWeatherMap();
+    this.trafficCameraAPI = new TrafficCameras();
 
     await this.cryptoAPI.init();
 

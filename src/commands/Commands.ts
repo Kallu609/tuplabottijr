@@ -12,7 +12,7 @@ const commands: Array<ICommand> = [
     classRef:  HelpCommand,
     name:      'help',
     helpText:  'Show help text',
-    helpArgs:  '[command]'
+    helpArgs:  '[command]' 
   },
   {
     classRef:  EchoCommand,
