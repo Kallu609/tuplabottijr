@@ -1,9 +1,11 @@
 import TuplabottiJr from '../Bot';
 import commands from './Commands';
 import HelpCommand from './HelpCommand';
+import WeatherCommand from './WeatherCommand';
 
 export default class CommandHandler {
   help: HelpCommand;
+  weather: WeatherCommand;
   
   constructor(public base: TuplabottiJr) {
     this.base = base;
@@ -17,6 +19,9 @@ export default class CommandHandler {
       
       if (rest.name === 'help') {
         this.help = ref;
+      }
+      if (rest.name === 'weather') {
+        this.weather = ref;
       }
       
       for (const [key, value] of Object.entries(rest)) {

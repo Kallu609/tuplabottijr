@@ -11,14 +11,9 @@ export default class DebugCommand extends CommandBase {
 
   eventHandler(): void {
     this.onText(/\/debug/, (msg, args) => {
-      const chatId = msg.chat.id;
       const options = settings.read();
 
-      const chatEnabled =
-        (options.weatherCommand) ?
-        options.weatherCommand.chatsEnabled.includes(msg.chat.id)
-        : false;
-
+      const chatEnabled = this.base.commands.weather.chatsEnabled.includes(msg.chat.id);
       const watchedCryptos = 
         (options.cryptoCompare) ?
         options.cryptoCompare.watchedCurrencies.join(', ') :
@@ -29,7 +24,7 @@ export default class DebugCommand extends CommandBase {
         `Weather reports enabled: ${ chatEnabled }\n` +
         `Watched cryptos: ${ watchedCryptos }`;
 
-      this.sendMessage(chatId, debugText);
+      this.sendMessage(msg.chat.id, debugText);
     });
   }
 }
