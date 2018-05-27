@@ -79,6 +79,16 @@ export default class WeatherCommand extends CommandBase {
     this.editMessage(message, weatherReport);
   }
 
+  async sendTrafficCameras(chatId: number): Promise<void> {
+    const trafficCameras = await this.api.getTrafficCameras();
+
+    for (const [cityName, url] of Object.entries(trafficCameras)) {
+      await this.bot.sendPhoto(chatId, url, {
+        caption: `Sääkamera: ${cityName}`
+      });
+    }
+  }
+
   scheduler(): void {
     schedule.scheduleJob(config.weatherCron, async () => {
       const weatherReport = await this.api.getWeatherReport();
@@ -97,6 +107,7 @@ export default class WeatherCommand extends CommandBase {
         }
         
         await this.sendMessage(chatId, weatherReport);
+        await this.sendTrafficCameras(chatId);
       }
     });
   }

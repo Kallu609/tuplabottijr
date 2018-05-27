@@ -99,6 +99,22 @@ export default class OpenWeatherMap {
 
     return response.data;
   }
+
+  async getTrafficCameras(): Promise<object> {
+    const cameras = {};
+
+    for (const city of config.openWeatherMap.cities) {
+      const response = await axios.get(city.camera);
+      const parts = response.data.split('","message":"","time_stamp');
+      
+      const urlEscaped = parts[parts.length - 2].split('"url":"')[1];
+      const url = urlEscaped.replace(/\\/g, '');
+
+      cameras[city.name] = url;
+    }
+
+    return cameras;
+  }
 }
 
 const weatherIcons = {

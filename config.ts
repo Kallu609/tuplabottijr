@@ -9,11 +9,12 @@ const config = {
     showDescriptions: false,
     cities: [
       {
-        name: 'Lahti,fi',
-        // camera: 'https://www.kelikamerat.info/kelikamerat/Pirkanmaa/Tampere/tie-3495/Tampere_Viinikank-Ratapihank'
+        name: 'Lahti',
+        camera: 'https://www.kelikamerat.info/kelikamerat/P%C3%A4ij%C3%A4t-H%C3%A4me/Lahti/tie-4/vt4_Ahtiala'
       },
       {
-        name: 'Tampere,fi',
+        name: 'Tampere',
+        camera: 'https://www.kelikamerat.info/kelikamerat/Pirkanmaa/Tampere/tie-3495/Tampere_Viinikank-Ratapihank'
       }
     ]
   },
