@@ -24,11 +24,11 @@ export default class TrafficCommand extends CommandBase {
     for (const [cityName, urls] of Object.entries(trafficCameras)) {
       for (const url of urls) {
         if (url.includes('roundshot')) {
-          await this.sendMessage(chatId, `Sääkamera: Tampere\n[(Koko resoluutio)](${url})`);
+          await this.sendMessage(chatId, `Tampere\n([Koko resoluutio)](${url}))`);
           continue;
         }
 
-        const caption = `Sääkamera: ${cityName}`;
+        const caption = `${cityName}`;
         await this.bot.sendPhoto(chatId, url, { caption });
       }
     }

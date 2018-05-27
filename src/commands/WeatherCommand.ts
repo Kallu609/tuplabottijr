@@ -80,10 +80,7 @@ export default class WeatherCommand extends CommandBase {
 
   scheduler(): void {
     schedule.scheduleJob(config.weatherCron, async () => {
-      const weatherReport = await this.api.getWeatherReport();
-      
       for (const chatId of this.chatsEnabled) {
-        // Vitsikäs
         if (chatId === -161953743) {
           await this.sendMessage(chatId, '_Hyvää huomenta pojat :3_');
 
@@ -97,6 +94,7 @@ export default class WeatherCommand extends CommandBase {
           await this.base.commands.traffic.sendTrafficCameras(chatId);
         }
         
+        const weatherReport = await this.api.getWeatherReport();
         await this.sendMessage(chatId, weatherReport);
       }
     });
