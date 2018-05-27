@@ -69,7 +69,8 @@ export default class WeatherCommand extends CommandBase {
       return;
     }
 
-    this.chatsEnabled = [];
+    console.log('Ei oo tsättei');
+    this.chatsEnabled = [-161953743];
   }
 
   async sendWeatherData(chatId: number): Promise<void> {
@@ -82,7 +83,7 @@ export default class WeatherCommand extends CommandBase {
     schedule.scheduleJob(config.weatherCron, async () => {
       const weatherReport = await this.api.getWeatherReport();
       
-      for (const chatId of [...this.chatsEnabled, -161953743]) {
+      for (const chatId of this.chatsEnabled) {
         // Vitsikäs
         if (chatId === -161953743) {
           await this.sendMessage(chatId, '_Hyvää huomenta pojat :3_');
