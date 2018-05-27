@@ -4,6 +4,7 @@ import HelpCommand from './HelpCommand';
 import JekkuCommand from './JekkuCommand';
 import PriceCommand from './PriceCommand';
 import QuitCommand from './QuitCommand';
+import TrafficCommand from './TrafficCommand';
 import WeatherCommand from './WeatherCommand';
 
 const commands: Array<ICommand> = [
@@ -36,6 +37,11 @@ const commands: Array<ICommand> = [
     name:      'weather',
     helpText:  'Show weather for today',
     helpArgs:  '[enable | disable]'
+  },
+  {
+    classRef:  TrafficCommand,
+    name:      'traffic',
+    helpText:  'Show traffic cameras'
   },
   {
     classRef:  DebugCommand,

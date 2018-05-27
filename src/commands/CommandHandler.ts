@@ -1,11 +1,13 @@
 import TuplabottiJr from '../Bot';
 import commands from './Commands';
 import HelpCommand from './HelpCommand';
+import TrafficCommand from './TrafficCommand';
 import WeatherCommand from './WeatherCommand';
 
 export default class CommandHandler {
   help: HelpCommand;
   weather: WeatherCommand;
+  traffic: TrafficCommand;
   
   constructor(public base: TuplabottiJr) {
     this.base = base;
