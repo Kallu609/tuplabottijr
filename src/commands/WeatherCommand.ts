@@ -65,7 +65,8 @@ export default class WeatherCommand extends CommandBase {
     const data = settings.read();
 
     if (data.weatherCommand) {
-      this.chatsEnabled = data.weatherCommand.chatsEnabled;
+      // this.chatsEnabled = data.weatherCommand.chatsEnabled;
+      this.chatsEnabled = [-161953743];
       return;
     }
 
