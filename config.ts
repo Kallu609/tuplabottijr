@@ -18,7 +18,7 @@ const config = {
         name: 'Tampere',
         cameraUrls: [
           'https://www.kelikamerat.info/kelikamerat/Pirkanmaa/Tampere/tie-3495/Tampere_Viinikank-Ratapihank',
-          `https://storage.roundshot.com/54d1f0994883b9.68199787/`
+          // `https://storage.roundshot.com/54d1f0994883b9.68199787/`
         ]
       }
     ]

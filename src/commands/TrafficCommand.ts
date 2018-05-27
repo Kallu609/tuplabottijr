@@ -24,7 +24,9 @@ export default class TrafficCommand extends CommandBase {
     for (const [cityName, urls] of Object.entries(trafficCameras)) {
       for (const url of urls) {
         if (url.includes('roundshot')) {
-          await this.sendMessage(chatId, `Tampere\n([Koko resoluutio)](${url}))`);
+          const captionWithUrl = `${cityName}\n${url}`;
+          console.log(url);
+          await this.bot.sendPhoto(chatId, url, { caption: captionWithUrl });
           continue;
         }
 
