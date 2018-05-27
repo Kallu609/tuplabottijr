@@ -21,10 +21,16 @@ export default class TrafficCommand extends CommandBase {
   async sendTrafficCameras(chatId: number): Promise<void> {
     const trafficCameras = await this.api.getTrafficCameras();
 
-    for (const [cityName, url] of Object.entries(trafficCameras)) {
-      await this.bot.sendPhoto(chatId, url, {
-        caption: `Sääkamera: ${cityName}`
-      });
+    for (const [cityName, urls] of Object.entries(trafficCameras)) {
+      for (const url of urls) {
+        if (url.includes('roundshot')) {
+          await this.sendMessage(chatId, `Sääkamera: Tampere\n[(Koko resoluutio)](${url})`);
+          continue;
+        }
+
+        const caption = `Sääkamera: ${cityName}`;
+        await this.bot.sendPhoto(chatId, url, { caption });
+      }
     }
   }
 }

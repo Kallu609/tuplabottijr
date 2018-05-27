@@ -22,17 +22,21 @@ export default class TrafficCameras {
     const cameras = {};
 
     for (const city of config.openWeatherMap.cities) {
-      if (city.camera.includes('kelikamerat.info')) {
-        cameras[city.name] = await this.parseKelikamerat(city.camera);
-        continue;
-      }
+      cameras[city.name] = [];
+
+      for (const cameraUrl of city.cameraUrls) {
+        if (cameraUrl.includes('kelikamerat.info')) {
+          cameras[city.name].push(await this.parseKelikamerat(cameraUrl));
+          continue;
+        }
+        
+        if (cameraUrl.includes('roundshot')) {
+          cameras[city.name].push(await this.parseRoundshot(cameraUrl));
+          continue;
+        }
       
-      if (city.camera.includes('roundshot')) {
-        cameras[city.name] = await this.parseRoundshot(city.camera);
-        continue;
+        cameras[city.name] = cameraUrl;
       }
-    
-      cameras[city.name] = city.camera;
     }
 
     return cameras;

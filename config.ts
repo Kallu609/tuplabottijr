@@ -10,12 +10,16 @@ const config = {
     cities: [
       {
         name: 'Lahti',
-        camera:
+        cameraUrls: [
           'https://www.kelikamerat.info/kelikamerat/P%C3%A4ij%C3%A4t-H%C3%A4me/Lahti/tie-4/vt4_Ahtiala/Lahteen-C0453602'
+        ]
       },
       {
         name: 'Tampere',
-        camera: `https://storage.roundshot.com/54d1f0994883b9.68199787/`
+        cameraUrls: [
+          'https://www.kelikamerat.info/kelikamerat/Pirkanmaa/Tampere/tie-3495/Tampere_Viinikank-Ratapihank',
+          `https://storage.roundshot.com/54d1f0994883b9.68199787/`
+        ]
       }
     ]
   },
