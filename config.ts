@@ -24,6 +24,14 @@ const config = {
     ]
   },
 
+  RSSReader: {
+    numberOfStories: 5,
+    showDescriptions: false,
+    feeds: [
+      'https://feeds.yle.fi/uutiset/v1/mostRead/YLE_UUTISET.rss'
+    ]
+  },
+
   // See https://github.com/node-schedule/node-schedule#cron-style-scheduling
   weatherCron: '0 7 * * *',
 

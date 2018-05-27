@@ -2,6 +2,7 @@ import DebugCommand from './DebugCommand';
 import EchoCommand from './EchoCommand';
 import HelpCommand from './HelpCommand';
 import JekkuCommand from './JekkuCommand';
+import NewsCommand from './NewsCommand';
 import PriceCommand from './PriceCommand';
 import QuitCommand from './QuitCommand';
 import TrafficCommand from './TrafficCommand';
@@ -42,6 +43,11 @@ const commands: Array<ICommand> = [
     classRef:  TrafficCommand,
     name:      'traffic',
     helpText:  'Show traffic cameras'
+  },
+  {
+    classRef:  NewsCommand,
+    name:      'news',
+    helpText:  'Show news'
   },
   {
     classRef:  DebugCommand,

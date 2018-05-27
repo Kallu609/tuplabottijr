@@ -25,7 +25,6 @@ export default class TrafficCommand extends CommandBase {
       for (const url of urls) {
         if (url.includes('roundshot')) {
           const captionWithUrl = `${cityName}\n${url}`;
-          console.log(url);
           await this.bot.sendPhoto(chatId, url, { caption: captionWithUrl });
           continue;
         }

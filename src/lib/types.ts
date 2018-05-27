@@ -30,3 +30,10 @@ interface ICity {
 interface ICities {
   [key: string]: ICity;
 }
+
+// RSSReader
+interface IStory {
+  link: string;
+  title: string;
+  description: string;
+}

@@ -26,8 +26,8 @@ export default class CommandBase {
     return [];
   }
   
-  async sendMessage(chatId: number, text: string): Promise<Message> {
-    const message = await this.bot.sendMessage(chatId, text, this.base.messageOptions);
+  async sendMessage(chatId: number, text: string, options?: TelegramBot.SendMessageOptions): Promise<Message> {
+    const message = await this.bot.sendMessage(chatId, text, { ...this.base.messageOptions, ...options });
     return message as Message;
   }
 
