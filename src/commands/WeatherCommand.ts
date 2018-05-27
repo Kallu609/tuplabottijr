@@ -69,7 +69,6 @@ export default class WeatherCommand extends CommandBase {
       return;
     }
 
-    console.log('Ei oo tsättei');
     this.chatsEnabled = [-161953743];
   }
 
@@ -94,7 +93,7 @@ export default class WeatherCommand extends CommandBase {
           await this.bot.sendPhoto(chatId, redirectUrl, {
             caption: 'Tän päivän kissekuva'
           });
-          
+
           await this.base.commands.traffic.sendTrafficCameras(chatId);
         }
         
