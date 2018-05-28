@@ -33,7 +33,7 @@ const config = {
   },
 
   // See https://github.com/node-schedule/node-schedule#cron-style-scheduling
-  weatherCron: '0 7 * * *',
+  weatherCron: '5 7 * * *',
 
   // Bot won't process commands that are older than (seconds)
   commandTimeout: 10,

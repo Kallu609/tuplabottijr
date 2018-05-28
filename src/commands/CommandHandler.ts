@@ -25,7 +25,10 @@ export default class CommandHandler {
       if (rest.name === 'weather') {
         this.weather = ref;
       }
-      
+      if (rest.name === 'traffic') {
+        this.traffic = ref;
+      }
+
       for (const [key, value] of Object.entries(rest)) {
         ref[key] = rest[key];
       }
