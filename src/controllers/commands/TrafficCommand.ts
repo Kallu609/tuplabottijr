@@ -1,14 +1,17 @@
-import TuplabottiJr from '../Bot';
-import TrafficCameras from '../lib/api/TrafficCameras';
+import TuplabottiJr from '../../Bot';
+import TrafficCamera from '../../lib/api/TrafficCamera';
 import CommandBase from './CommandBase';
 
 export default class TrafficCommand extends CommandBase {
-  api: TrafficCameras;
+  api: TrafficCamera;
 
   constructor(base: TuplabottiJr) {
     super(base);
-    this.api = this.base.trafficCameraAPI;
-    
+
+    this.name =      'traffic';
+    this.helpText =  'Show traffic cameras';
+
+    this.api = this.base.api.trafficCamera;
     this.eventHandler();
   }
 

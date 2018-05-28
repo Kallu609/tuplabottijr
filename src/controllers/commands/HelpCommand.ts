@@ -1,11 +1,14 @@
-import { Message } from 'node-telegram-bot-api';
-import TuplabottiJr from '../Bot';
+import TuplabottiJr from '../../Bot';
 import CommandBase from './CommandBase';
-import commands from './Commands';
 
 export default class HelpCommand extends CommandBase {
   constructor(base: TuplabottiJr) {
     super(base);
+    
+    this.name = 'help';
+    this.helpText = 'Show help text';
+    this.helpArgs = '[command]';
+
     this.eventHandler();
   }
 
@@ -20,15 +23,16 @@ export default class HelpCommand extends CommandBase {
   }
 
   getAllHelpText(chatId: number): void {
-    const response = commands
-      .map(command => {
+    const commands = Object.values(this.base.commands);
+    
+    const response = commands.map((command: any) => {
         if (command.hidden) {
           return false;
         }
 
         return `\`${ ('/' + command.name).padEnd(8, ' ') } \`${ command.helpText }`;
       })
-      .filter(command => command)
+      .filter((command: string | boolean) => command)
       .join('\n');
 
     this.sendMessage(chatId, response);
@@ -38,10 +42,13 @@ export default class HelpCommand extends CommandBase {
     commandName = commandName.toLowerCase();
     
     const getResponse = () => {
-      const command = commands.find(x => x.name === commandName);
+      const commands = Object.values(this.base.commands);
+      const command = commands.find((x: any) => x.name === commandName);
   
       if (command && !command.hidden && !command.disabled) {
-        return `\`/${ command.name } ${ command.helpArgs }\`\n${ command.helpText }`;
+        return `\`/${ command.name }` +
+               `${ (!command.helpArgs) ? command.helpArgs : '' }\`\n` +
+               `${ command.helpText }`;
       }
   
       return 'That command does not exist';

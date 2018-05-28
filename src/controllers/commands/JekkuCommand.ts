@@ -1,9 +1,14 @@
-import TuplabottiJr from '../Bot';
+import TuplabottiJr from '../../Bot';
 import CommandBase from './CommandBase';
 
 export default class JekkuCommand extends CommandBase {
   constructor(base: TuplabottiJr) {
     super(base);
+
+    this.name =      'jekku';
+    this.helpText =  'Jekuta kaikkia';
+    this.hidden =    true;
+
     this.eventHandler();
   }
   

@@ -1,6 +1,6 @@
-import config from '../../config';
-import TuplabottiJr from '../Bot';
-import RSSReader from '../lib/api/RSSReader';
+import config from '../../../config';
+import TuplabottiJr from '../../Bot';
+import RSSReader from '../../lib/api/RSSReader';
 import CommandBase from './CommandBase';
 
 export default class NewsCommand extends CommandBase {
@@ -8,8 +8,11 @@ export default class NewsCommand extends CommandBase {
 
   constructor(base: TuplabottiJr) {
     super(base);
-    this.api = new RSSReader();
 
+    this.name =      'news';
+    this.helpText =  'Show news';
+
+    this.api = new RSSReader();
     this.eventHandler();
   }
 

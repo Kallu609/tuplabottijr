@@ -1,14 +1,14 @@
-import TuplabottiJr from '../Bot';
-import CryptoCompare from '../lib/api/CryptoCompare';
+import TuplabottiJr from '../../Bot';
 import CommandBase from './CommandBase';
 
 export default class PriceCommand extends CommandBase {
-  api: CryptoCompare;
-
   constructor(base: TuplabottiJr) {
     super(base);
-    this.api = base.cryptoAPI;
 
+    this.name =      'price';
+    this.helpText =  'Shows price of cryptocurrencies';
+    this.helpArgs =  '<crypto(s)>';
+    
     this.eventHandler();
   }
 
@@ -21,7 +21,7 @@ export default class PriceCommand extends CommandBase {
       }
 
       const cryptos = args
-          .filter(crypto => this.api.coinlist.includes(crypto.toUpperCase()))
+          .filter(crypto => this.base.api.coinlist.includes(crypto.toUpperCase()))
           .map(crypto => crypto.toUpperCase());
       
       if (!cryptos.length) {
@@ -29,7 +29,7 @@ export default class PriceCommand extends CommandBase {
       }
 
       const message = await this.sendMessage(chatId, '_Loading..._');
-      const prices = await this.api.fetchPrices(cryptos);
+      const prices = await this.base.api.fetchPrices(cryptos);
 
       const response = cryptos.map(crypto => {
         const fiatPrices = prices[crypto];

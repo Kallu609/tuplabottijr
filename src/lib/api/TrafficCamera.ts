@@ -2,7 +2,7 @@ import axios from 'axios';
 import { DateTime } from 'luxon';
 import config from '../../../config';
 
-export default class TrafficCameras {
+export default class TrafficCamera {
   async parseKelikamerat(cameraUrl: string): Promise<string> {
     const response = await axios.get(cameraUrl);
     const parts = response.data.split('","message":"","time_stamp');

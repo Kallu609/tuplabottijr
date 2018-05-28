@@ -1,13 +1,17 @@
 declare module 'node-schedule-tz';
 
-interface IType extends Function {}
+interface IAPIList {
+  [key: string]: any;
+}
+
+type ICommandList = IAPIList;
 
 interface ICommand {
-  classRef:  any;
-  name:      string;
-  helpText:  string;
+  classRef: any;
+  name: string;
+  helpText: string;
   helpArgs?: string;
-  hidden?:   boolean;
+  hidden?: boolean;
   disabled?: boolean;
 }
 

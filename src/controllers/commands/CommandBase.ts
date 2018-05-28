@@ -1,9 +1,8 @@
 import { Message } from 'node-telegram-bot-api';
 import * as TelegramBot from 'node-telegram-bot-api';
-import config from '../../config';
-import TuplabottiJr from '../Bot';
-import log from '../lib/logging';
-import commands from './Commands';
+import config from '../../../config';
+import TuplabottiJr from '../../Bot';
+import log from '../../lib/logging';
 
 export default class CommandBase {
   bot: TelegramBot;

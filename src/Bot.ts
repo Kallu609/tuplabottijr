@@ -2,34 +2,35 @@
 import * as TelegramBot from 'node-telegram-bot-api';
 import { ConstructorOptions, SendMessageOptions } from 'node-telegram-bot-api';
 import config from '../config';
-import CommandHandler from './commands/CommandHandler';
+import CommandLoader from './controllers/CommandLoader';
 import CryptoCompare from './lib/api/CryptoCompare';
 import OpenWeatherMap from './lib/api/OpenWeatherMap';
-import TrafficCameras from './lib/api/TrafficCameras';
+import TrafficCamera from './lib/api/TrafficCamera';
 import log from './lib/logging';
 
 export default class TuplabottiJr {
   bot: TelegramBot;
-  commands: CommandHandler;
+  commands: ICommandList;
+  api: IAPIList;
   
   token: string;
   options: ConstructorOptions;
   messageOptions: SendMessageOptions;
-
-  cryptoAPI: CryptoCompare;
-  weatherAPI: OpenWeatherMap;
-  trafficCameraAPI: TrafficCameras;
 
   constructor() {
     this.init();
   }
 
   async init(): Promise<void> {
-    this.cryptoAPI = new CryptoCompare();
-    this.weatherAPI = new OpenWeatherMap();
-    this.trafficCameraAPI = new TrafficCameras();
+    this.commands = {};
+    
+    this.api = {
+      crypto: new CryptoCompare(),
+      weather: new OpenWeatherMap(),
+      trafficCamera: new TrafficCamera()
+    };
 
-    await this.cryptoAPI.init();
+    await this.api.crypto.init();
 
     this.create();
     this.start();
@@ -58,8 +59,7 @@ export default class TuplabottiJr {
     
     this.bot = new TelegramBot(this.token, this.options);
     this.eventHandler();
-
-    this.commands = new CommandHandler(this);
+    new CommandLoader(this);
   }
 
   private setToken(): void {

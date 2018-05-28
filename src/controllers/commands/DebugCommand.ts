@@ -1,11 +1,16 @@
 import * as schedule from 'node-schedule-tz';
-import TuplabottiJr from '../Bot';
-import * as settings from '../lib/settings';
+import TuplabottiJr from '../../Bot';
+import * as settings from '../../lib/settings';
 import CommandBase from './CommandBase';
 
 export default class DebugCommand extends CommandBase {
   constructor(base: TuplabottiJr) {
     super(base);
+
+    this.name =      'debug';
+    this.helpText =  'Show date';
+    this.hidden =    true;
+    
     this.eventHandler();
   }
 

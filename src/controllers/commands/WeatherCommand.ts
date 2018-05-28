@@ -1,10 +1,10 @@
 
 import axios from 'axios';
 import * as schedule from 'node-schedule';
-import config from '../../config';
-import TuplabottiJr from '../Bot';
-import OpenWeatherMap from '../lib/api/OpenWeatherMap';
-import * as settings from '../lib/settings';
+import config from '../../../config';
+import TuplabottiJr from '../../Bot';
+import OpenWeatherMap from '../../lib/api/OpenWeatherMap';
+import * as settings from '../../lib/settings';
 import CommandBase from './CommandBase';
 
 export default class WeatherCommand extends CommandBase {
@@ -13,8 +13,12 @@ export default class WeatherCommand extends CommandBase {
 
   constructor(base: TuplabottiJr) {
     super(base);
-    this.api = this.base.weatherAPI;
-    
+
+    this.name =      'weather';
+    this.helpText =  'Show weather for today';
+    this.helpArgs =  '[enable | disable]';
+
+    this.api = this.base.api.weather;
     this.loadEnabledChats();
     this.eventHandler();
     this.scheduler();

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import config from '../../../config';
+import * as cache from '../cache';
 import log from '../logging';
-import * as cache from './cache';
 
 const API_ENDPOINTS = {
   coinlist:   'https://www.cryptocompare.com/api/data/coinlist/',
