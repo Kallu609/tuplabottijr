@@ -45,10 +45,9 @@ export default class CommandBase {
     this.bot.onText(regexp, (msg, match) => {    
       if (this.disabled) return;
       
-      const now =  Math.floor(Date.now() / 1000);
-      const deltaSeconds = now - msg.date;
+      const deltaMs = Date.now() - msg.date;
 
-      if (deltaSeconds > config.commandTimeout) {
+      if (deltaMs > config.commandTimeout) {
         return;
       }
 

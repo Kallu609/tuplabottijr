@@ -35,17 +35,17 @@ const config = {
   // See https://github.com/node-schedule/node-schedule#cron-style-scheduling
   weatherCron: '5 7 * * *',
 
-  // Bot won't process commands that are older than (seconds)
-  commandTimeout: 10,
+  // Bot won't process commands that are older than (milliseconds)
+  commandTimeout: 10 * 1000,
 
   // Supported fiat currencies
   fiatCurrencies: ['USD', 'EUR', 'GBP'],
   
-  // Price update interval (seconds)
-  priceUpdateInterval: 5,
+  // Price update interval (milliseconds)
+  priceUpdateInterval: 5 * 1000,
 
-  // If coinlist is older than this (seconds), it's fetched from API instead of cache
-  coinlistLifespan: 300
+  // If coinlist is older than this (milliseconds), it's fetched from API instead of cache
+  coinlistLifespan: 300 * 1000
 };
 
 export default config;

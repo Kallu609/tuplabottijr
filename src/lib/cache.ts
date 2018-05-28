@@ -29,9 +29,7 @@ export function upToDate(filename: string, lifespan: number): boolean {
   }
   
   const lastModified = fs.statSync(filepath).mtime;
-  const deltaTime =
-    Math.floor(Date.now() / 1000) -
-    Math.floor(Number(lastModified) / 1000);
+  const deltaMs = Date.now() - Number(lastModified);
 
-  return deltaTime < lifespan;
+  return deltaMs < lifespan;
 }

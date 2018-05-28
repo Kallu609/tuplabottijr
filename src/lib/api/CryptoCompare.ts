@@ -38,7 +38,7 @@ export default class CryptoCompare {
 
     setInterval(() => {
       this.priceUpdater();
-    }, config.priceUpdateInterval * 1000);
+    }, config.priceUpdateInterval);
   }
 
   async getCoinList(): Promise<string[]> {
