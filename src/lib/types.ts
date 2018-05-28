@@ -1,19 +1,8 @@
-declare module 'node-schedule-tz';
-
 interface IAPIList {
   [key: string]: any;
 }
 
 type ICommandList = IAPIList;
-
-interface ICommand {
-  classRef: any;
-  name: string;
-  helpText: string;
-  helpArgs?: string;
-  hidden?: boolean;
-  disabled?: boolean;
-}
 
 interface ISettings {
   weatherCommand?: {

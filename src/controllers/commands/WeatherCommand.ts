@@ -20,8 +20,8 @@ export default class WeatherCommand extends CommandBase {
 
     this.api = this.base.api.weather;
     this.loadEnabledChats();
-    this.eventHandler();
     this.scheduler();
+    this.eventHandler();
   }
 
   eventHandler(): void {
