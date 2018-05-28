@@ -14,9 +14,9 @@ export default class WeatherCommand extends CommandBase {
   constructor(base: TuplabottiJr) {
     super(base);
 
-    this.name =      'weather';
-    this.helpText =  'Show weather for today';
-    this.helpArgs =  '[enable | disable]';
+    this.name = 'weather';
+    this.helpText = 'Show weather for today';
+    this.helpArgs = '[enable | disable]';
 
     this.api = this.base.api.weather;
     this.loadEnabledChats();

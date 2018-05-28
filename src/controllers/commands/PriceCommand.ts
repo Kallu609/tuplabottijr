@@ -5,9 +5,9 @@ export default class PriceCommand extends CommandBase {
   constructor(base: TuplabottiJr) {
     super(base);
 
-    this.name =      'price';
-    this.helpText =  'Shows price of cryptocurrencies';
-    this.helpArgs =  '<crypto(s)>';
+    this.name = 'price';
+    this.helpText = 'Shows price of cryptocurrencies';
+    this.helpArgs = '<crypto(s)>';
     
     this.eventHandler();
   }

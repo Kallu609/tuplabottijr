@@ -9,8 +9,8 @@ export default class NewsCommand extends CommandBase {
   constructor(base: TuplabottiJr) {
     super(base);
 
-    this.name =      'news';
-    this.helpText =  'Show news';
+    this.name = 'news';
+    this.helpText = 'Show YLE news';
 
     this.api = new RSSReader();
     this.eventHandler();

@@ -5,9 +5,9 @@ export default class JekkuCommand extends CommandBase {
   constructor(base: TuplabottiJr) {
     super(base);
 
-    this.name =      'jekku';
-    this.helpText =  'Jekuta kaikkia';
-    this.hidden =    true;
+    this.name = 'jekku';
+    this.helpText = 'Jekuta kaikkia';
+    this.hidden = true;
 
     this.eventHandler();
   }

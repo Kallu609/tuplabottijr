@@ -8,8 +8,8 @@ export default class TrafficCommand extends CommandBase {
   constructor(base: TuplabottiJr) {
     super(base);
 
-    this.name =      'traffic';
-    this.helpText =  'Show traffic cameras';
+    this.name = 'traffic';
+    this.helpText = 'Show traffic cameras';
 
     this.api = this.base.api.trafficCamera;
     this.eventHandler();

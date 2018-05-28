@@ -5,9 +5,9 @@ export default class EchoCommand extends CommandBase {
   constructor(base: TuplabottiJr) {
     super(base);
     
-    this.name =      'echo';
-    this.helpText =  'Echoes to you';
-    this.hidden =    true;
+    this.name = 'echo';
+    this.helpText = 'Echoes to you';
+    this.hidden = true;
 
     this.eventHandler();
   }

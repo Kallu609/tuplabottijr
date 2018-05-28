@@ -7,9 +7,9 @@ export default class DebugCommand extends CommandBase {
   constructor(base: TuplabottiJr) {
     super(base);
 
-    this.name =      'debug';
-    this.helpText =  'Show date';
-    this.hidden =    true;
+    this.name = 'debug';
+    this.helpText = 'Show date';
+    this.hidden = true;
     
     this.eventHandler();
   }
