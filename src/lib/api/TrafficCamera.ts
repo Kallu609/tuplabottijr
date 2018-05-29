@@ -25,13 +25,19 @@ export default class TrafficCamera {
       cameras[city.name] = [];
 
       for (const cameraUrl of city.cameraUrls) {
-        if (cameraUrl.includes('kelikamerat.info')) {
-          cameras[city.name].push(await this.parseKelikamerat(cameraUrl));
-          continue;
-        }
         
-        if (cameraUrl.includes('roundshot')) {
-          cameras[city.name].push(await this.parseRoundshot(cameraUrl));
+        try {
+          if (cameraUrl.includes('kelikamerat.info')) {
+            cameras[city.name].push(await this.parseKelikamerat(cameraUrl));
+            continue;
+          }
+          
+          if (cameraUrl.includes('roundshot')) {
+            cameras[city.name].push(await this.parseRoundshot(cameraUrl));
+            continue;
+          }
+        } catch (e) {
+          console.log(`Error ${e.response.status}: ${cameraUrl}`);
           continue;
         }
       
@@ -39,6 +45,7 @@ export default class TrafficCamera {
       }
     }
 
+    console.log(cameras);
     return cameras;
   }
 }
