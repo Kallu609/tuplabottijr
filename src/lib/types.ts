@@ -24,6 +24,13 @@ interface ICities {
   [key: string]: ICity;
 }
 
+// TrafficCamera
+interface ITrafficCamera {
+  url: string;
+  timestamp?: number;
+  cityName?: string;
+}
+
 // RSSReader
 interface IStory {
   link: string;

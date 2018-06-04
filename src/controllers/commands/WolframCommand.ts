@@ -19,17 +19,18 @@ export default class WolframCommand extends CommandBase {
         this.showHelp(msg.chat.id);
         return;
       }
-      
-      const question = args.join(' ');
-      const queryUrl = `http://api.wolframalpha.com/v1/simple?appid=${config.WolframAlpha.token}&i=${question}`;
+
+      if (!msg.from) return;
       
       const message = await this.sendMessage(msg.chat.id, '_Loading..._');
+      const question = args.join(' ');
+      const queryUrl = `http://api.wolframalpha.com/v1/simple?appid=${config.WolframAlpha.token}&i=${question}`;
 
       try {
         await this.bot.sendPhoto(msg.chat.id, queryUrl);
         await this.bot.deleteMessage(msg.chat.id, message.message_id.toString());
       } catch (e) {
-        await this.editMessage(message, `Could not find answer :(`);
+        await this.editMessage(message, `${msg.from.first_name}, could not find answer :(`);
       }
     });
   }

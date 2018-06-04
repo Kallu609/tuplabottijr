@@ -3,45 +3,50 @@ import { DateTime } from 'luxon';
 import config from '../../../config';
 
 export default class TrafficCamera {
-  async parseKelikamerat(cameraUrl: string): Promise<string> {
+  async parseKelikamerat(cameraUrl: string): Promise<ITrafficCamera | boolean> {
     const response = await axios.get(cameraUrl);
-    const parts = response.data.split('","message":"","time_stamp');
+    const regex = /"url":"(.+?)","message":".*?","time_stamp":"(\d+)/g;
+    const lastItem = response.data.match(regex).pop();
+    const matches = regex.exec(lastItem);
     
-    const urlEscaped = parts[parts.length - 2].split('"url":"')[1];
-    const url = urlEscaped.replace(/\\/g, '');
-    return url;
+    if (!matches) return false;
+
+    const url = matches[1].replace(/\\/g, '');
+    const timestamp = Number(matches[2]);
+    const camera = { url, timestamp };
+
+    return camera;
   }
 
-  async parseRoundshot(cameraUrl: string): Promise<string> {
-    const dt = DateTime.local().minus({ hours: 1 });
-    const url = `${ cameraUrl }${ dt.toFormat('yyyy-LL-dd/HH-55-00/yyyy-LL-dd-HH-55-00') }_quarter.jpg`;
-    return url;
-  }
-
-  async getTrafficCameras(): Promise<object> {
-    const cameras = {};
+  async getTrafficCameras(): Promise<Array<ITrafficCamera>> {
+    const cameras = [];
 
     for (const city of config.openWeatherMap.cities) {
-      cameras[city.name] = [];
-
       for (const cameraUrl of city.cameraUrls) {
-        
         try {
           if (cameraUrl.includes('kelikamerat.info')) {
-            cameras[city.name].push(await this.parseKelikamerat(cameraUrl));
-            continue;
-          }
-          
-          if (cameraUrl.includes('roundshot')) {
-            cameras[city.name].push(await this.parseRoundshot(cameraUrl));
+            const camera = await this.parseKelikamerat(cameraUrl);
+            
+            if (typeof camera === 'boolean') {
+              continue;
+            }
+
+            cameras.push({
+              ...camera,
+              cityName: city.name 
+            });
+
             continue;
           }
         } catch (e) {
           console.log(`Error ${e.response.status}: ${cameraUrl}`);
           continue;
         }
-      
-        cameras[city.name] = cameraUrl;
+
+        // Camera URL is a static image, no parsing needed
+        cameras.push({
+          url: cameraUrl
+        });
       }
     }
 
