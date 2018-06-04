@@ -7,3 +7,4 @@ export { default as price } from './PriceCommand';
 export { default as quit } from './QuitCommand';
 export { default as traffic } from './TrafficCommand';
 export { default as weather } from './WeatherCommand';
+export { default as wolfram } from './WolframCommand';

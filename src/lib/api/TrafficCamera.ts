@@ -45,7 +45,6 @@ export default class TrafficCamera {
       }
     }
 
-    console.log(cameras);
     return cameras;
   }
 }

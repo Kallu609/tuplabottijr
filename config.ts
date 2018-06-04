@@ -32,6 +32,10 @@ const config = {
     ]
   },
 
+  WolframAlpha: {
+    token: process.env.WOLFRAMALPHA_TOKEN
+  },
+
   // See https://github.com/node-schedule/node-schedule#cron-style-scheduling
   weatherCron: '5 7 * * *',
 
