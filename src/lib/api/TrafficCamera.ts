@@ -3,21 +3,6 @@ import { DateTime } from 'luxon';
 import config from '../../../config';
 
 export default class TrafficCamera {
-  async parseKelikamerat(cameraUrl: string): Promise<ITrafficCamera | undefined> {
-    const response = await axios.get(cameraUrl);
-    const regex = /"url":"(.+?)","message":".*?","time_stamp":"(\d+)/g;
-    const lastItem = response.data.match(regex).pop();
-    const matches = regex.exec(lastItem);
-    
-    if (!matches) return;
-
-    const url = matches[1].replace(/\\/g, '');
-    const timestamp = Number(matches[2]);
-    const camera = { url, timestamp };
-
-    return camera;
-  }
-
   async getTrafficCameras(): Promise<Array<ITrafficCamera>> {
     const cities = config.openWeatherMap.cities;
 
@@ -45,5 +30,20 @@ export default class TrafficCamera {
     ).filter(camera => camera);
     
     return cameras as Array<ITrafficCamera>;
+  }
+
+  private async parseKelikamerat(cameraUrl: string): Promise<ITrafficCamera | undefined> {
+    const response = await axios.get(cameraUrl);
+    const regex = /"url":"(.+?)","message":".*?","time_stamp":"(\d+)/g;
+    const lastItem = response.data.match(regex).pop();
+    const matches = regex.exec(lastItem);
+    
+    if (!matches) return;
+
+    const url = matches[1].replace(/\\/g, '');
+    const timestamp = Number(matches[2]);
+    const camera = { url, timestamp };
+
+    return camera;
   }
 }
