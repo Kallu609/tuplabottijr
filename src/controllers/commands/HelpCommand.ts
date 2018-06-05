@@ -46,8 +46,9 @@ export default class HelpCommand extends CommandBase {
       const command = commands.find((x: any) => x.name === commandName);
   
       if (command && !command.hidden && !command.disabled) {
-        return `\`/${ command.name }` +
-               `${ (!command.helpArgs) ? command.helpArgs : '' }\`\n` +
+        const args = command.helpArgs ? (' ' + command.helpArgs) : '';
+
+        return `\`/${ command.name }${ args }\`\n` +
                `${ command.helpText }`;
       }
   
