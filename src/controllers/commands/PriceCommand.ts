@@ -10,7 +10,7 @@ export default class PriceCommand extends CommandBase {
     this.api = base.api.crypto;
 
     this.name = 'price';
-    this.helpText = 'Shows price of cryptocurrencies';
+    this.helpText = 'Show price of cryptocurrencies';
     this.helpArgs = '<crypto(s)>';
     
     this.eventHandler();
