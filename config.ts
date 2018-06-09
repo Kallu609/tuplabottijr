@@ -25,7 +25,7 @@ const config = {
 
   RSSReader: {
     numberOfStories: 5,
-    showDescriptions: false,
+    showDescriptions: true,
     feeds: [
       'https://feeds.yle.fi/uutiset/v1/mostRead/YLE_UUTISET.rss'
     ]
