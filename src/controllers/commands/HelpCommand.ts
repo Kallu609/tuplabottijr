@@ -29,7 +29,7 @@ export default class HelpCommand extends CommandBase {
         if (command.hidden) {
           return false;
         }
-
+        
         return `\`${ ('/' + command.name).padEnd(8, ' ') } \`${ command.helpText }`;
       })
       .filter((command: string | boolean) => command)

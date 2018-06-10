@@ -80,15 +80,23 @@ export default class CryptoCompare {
     this.prices = response.data;
   }
 
-  async fetchPrices(cryptoCurrencies: Array<string>): Promise<object> {
+  async fetchPrices(fromCurrencies: Array<string> | string,
+                    toCurrencies: Array<string> | string): Promise<object> {
+    
+    const fsyms = Array.isArray(fromCurrencies) ? fromCurrencies.join(',') : fromCurrencies;
+    const tsyms = Array.isArray(toCurrencies) ? toCurrencies.join(',') : toCurrencies;
+
     const response =
       await axios.get(API_ENDPOINTS.pricemulti, {
         params: {
-          fsyms: cryptoCurrencies.join(','),
-          tsyms: this.fiatCurrencies.join(',')
+          fsyms, tsyms
         }
       });
 
     return response.data;
+  }
+  
+  async fiatPrices(fromCurrencies: Array<string>): Promise<object> {
+   return await this.fetchPrices(fromCurrencies, this.fiatCurrencies); 
   }
 }
