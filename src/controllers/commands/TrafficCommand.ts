@@ -9,7 +9,7 @@ export default class TrafficCommand extends CommandBase {
     super(base);
 
     this.name = 'traffic';
-    this.helpText = 'Show traffic cameras';
+    this.helpText = 'Show traffisc cameras';
 
     this.api = this.base.api.trafficCamera;
     this.eventHandler();
