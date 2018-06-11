@@ -12,7 +12,7 @@ export default class WeatherCommand extends CommandBase {
     super(base);
 
     this.name = 'weather';
-    this.helpText = 'Show weather for today';
+    this.helpText = 'Show weather';
     this.helpArgs = '[enable | disable]';
 
     this.api = this.base.api.weather;
