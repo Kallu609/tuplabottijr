@@ -34,7 +34,7 @@ export default class CryptoCommand extends CommandBase {
       return this.showHelp(msg.chat.id);
     });
   }
-  // /crypto 23 btc to eur
+  
   async convertPrice(chatId: number, args: Array<string>): Promise<void> {
     const amount = isNumber(args[0]) ? Number(args.shift()) : 1;
     const fromCurrency = args[0].toUpperCase();
@@ -49,7 +49,7 @@ export default class CryptoCommand extends CommandBase {
 
     for (const currency of [fromCurrency, ...toCurrencies]) {
       if (!usableCurrencies.includes(currency)) {
-        this.sendMessage(chatId, `\nInvalid currencies`);
+        this.sendMessage(chatId, `Invalid currencies`);
         return;
       }
     }

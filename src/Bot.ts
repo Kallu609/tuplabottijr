@@ -3,6 +3,7 @@ import * as TelegramBot from 'node-telegram-bot-api';
 import { ConstructorOptions, SendMessageOptions } from 'node-telegram-bot-api';
 import config from '../config';
 import CommandLoader from './controllers/CommandLoader';
+import Schedules from './controllers/Schedules';
 import CryptoCompare from './lib/api/CryptoCompare';
 import OpenWeatherMap from './lib/api/OpenWeatherMap';
 import TrafficCamera from './lib/api/TrafficCamera';
@@ -59,7 +60,9 @@ export default class TuplabottiJr {
     
     this.bot = new TelegramBot(this.token, this.options);
     this.eventHandler();
+    
     new CommandLoader(this);
+    new Schedules(this);
   }
 
   private setToken(): void {

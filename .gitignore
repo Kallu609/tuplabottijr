@@ -3,3 +3,4 @@ node_modules/
 .env
 src/lib/cache/*
 build
+src/lib/bot-settings.json

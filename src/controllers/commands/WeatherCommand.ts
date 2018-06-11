@@ -1,15 +1,12 @@
-
 import axios from 'axios';
-import * as schedule from 'node-schedule';
-import config from '../../../config';
 import TuplabottiJr from '../../Bot';
 import OpenWeatherMap from '../../lib/api/OpenWeatherMap';
 import * as settings from '../../lib/settings';
 import CommandBase from './CommandBase';
 
 export default class WeatherCommand extends CommandBase {
-  chatsEnabled: Array<number>;
   api: OpenWeatherMap;
+  chatsEnabled: Array<number>;
 
   constructor(base: TuplabottiJr) {
     super(base);
@@ -20,7 +17,6 @@ export default class WeatherCommand extends CommandBase {
 
     this.api = this.base.api.weather;
     this.loadEnabledChats();
-    this.scheduler();
     this.eventHandler();
   }
 
@@ -30,13 +26,8 @@ export default class WeatherCommand extends CommandBase {
         this.sendWeatherData(msg.chat.id);
         return;
       }
-      
-      const arg = args[0].toLowerCase();
 
-      if (args.length > 1 || !['enable', 'disable'].includes(arg)) {
-        this.showHelp(msg.chat.id);
-        return;
-      }
+      const arg = args[0].toLowerCase();
 
       if (arg === 'enable') {
         if (!this.chatsEnabled.includes(msg.chat.id)) {
@@ -45,15 +36,22 @@ export default class WeatherCommand extends CommandBase {
         }
 
         this.sendMessage(msg.chat.id, 'Weather notifications enabled for this chat.');
-      } else {
+        return;
+      }
+
+      if (arg === 'disable') {
         const index = this.chatsEnabled.indexOf(msg.chat.id);
+
         if (index !== -1) {
           this.chatsEnabled.splice(index, 1);
           this.saveEnabledChats();
         }
 
         this.sendMessage(msg.chat.id, 'Weather notifications disabled for this chat.');
+        return;
       }
+            
+      this.showHelp(msg.chat.id);
     });
   }
 
@@ -67,13 +65,7 @@ export default class WeatherCommand extends CommandBase {
 
   loadEnabledChats(): void {
     const data = settings.read();
-
-    if (data.weatherCommand) {
-      this.chatsEnabled = data.weatherCommand.chatsEnabled;
-      return;
-    }
-
-    this.chatsEnabled = [-161953743];
+    this.chatsEnabled = (data.weatherCommand) ? data.weatherCommand.chatsEnabled : [];
   }
 
   async sendWeatherData(chatId: number): Promise<void> {
@@ -82,25 +74,20 @@ export default class WeatherCommand extends CommandBase {
     this.editMessage(message, weatherReport);
   }
 
-  scheduler(): void {
-    schedule.scheduleJob(config.weatherCron, async () => {
-      for (const chatId of this.chatsEnabled) {
-        if (chatId === -161953743) {
-          await this.sendMessage(chatId, '_Hyvää huomenta pojat :3_');
+  async scheduleJob(): Promise<void> {
+    for (const chatId of this.chatsEnabled) {
+      await this.sendMessage(chatId, '_Hyvää huomenta pojat :3_');
 
-          const response = await axios.get('http://thecatapi.com/api/images/get');
-          const redirectUrl = response.request.res.responseUrl;
-  
-          await this.bot.sendPhoto(chatId, redirectUrl, {
-            caption: 'Tän päivän kissekuva'
-          });
+      const response = await axios.get('http://thecatapi.com/api/images/get');
+      const redirectUrl = response.request.res.responseUrl;
 
-          await this.base.commands.traffic.sendTrafficCameras(chatId);
-        }
-        
-        const weatherReport = await this.api.getWeatherReport();
-        await this.sendMessage(chatId, weatherReport);
-      }
-    });
+      await this.base.bot.sendPhoto(chatId, redirectUrl, {
+        caption: 'Tän päivän kissekuva'
+      });
+
+      await this.base.api.traffic.sendTrafficCameras(chatId);
+      const weatherReport = await this.api.getWeatherReport();
+      await this.sendMessage(chatId, weatherReport);
+    }
   }
 }
