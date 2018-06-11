@@ -38,6 +38,9 @@ const config = {
   // See https://github.com/node-schedule/node-schedule#cron-style-scheduling
   weatherCron: '0 7 * * *',
 
+  // IBAN numbers for /iban command
+  IBAN: process.env.IBAN || '',
+
   // Bot won't process commands that are older than (milliseconds)
   commandTimeout: 10 * 1000,
 
