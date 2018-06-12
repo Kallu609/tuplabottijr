@@ -85,7 +85,7 @@ export default class WeatherCommand extends CommandBase {
         caption: 'Tän päivän kissekuva'
       });
 
-      await this.base.api.traffic.sendTrafficCameras(chatId);
+      await this.base.commands.traffic.sendTrafficCameras(chatId);
       const weatherReport = await this.api.getWeatherReport();
       await this.sendMessage(chatId, weatherReport);
     }
