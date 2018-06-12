@@ -8,7 +8,6 @@ export default class EchoCommand extends CommandBase {
     
     this.name = 'iban';
     this.helpText = 'Shows IBAN numbers';
-    this.hidden = true;
 
     this.eventHandler();
   }
