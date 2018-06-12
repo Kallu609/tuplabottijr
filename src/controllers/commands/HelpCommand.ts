@@ -30,7 +30,7 @@ export default class HelpCommand extends CommandBase {
           return false;
         }
         
-        return `\`${ ('/' + command.name).padEnd(8, ' ') } \`${ command.helpText }`;
+        return `${ ( `\`/${ command.name }`).padEnd(12, ' ') }\`` + `${ command.helpText }`;
       })
       .filter((command: string | boolean) => command)
       .join('\n');
