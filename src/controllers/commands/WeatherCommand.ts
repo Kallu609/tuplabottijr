@@ -70,8 +70,13 @@ export default class WeatherCommand extends CommandBase {
 
   async sendWeatherData(chatId: number): Promise<void> {
     const message = await this.sendMessage(chatId, 'Loading weather data...');
-    const weatherReport = await this.api.getWeatherReport();
-    this.editMessage(message, weatherReport);
+    
+    try {
+      const weatherReport = await this.api.getWeatherReport();
+      this.editMessage(message, weatherReport);
+    } catch (e) {
+      this.editMessage(message, 'Could not load weather, please try again');
+    }
   }
 
   async scheduleJob(): Promise<void> {
