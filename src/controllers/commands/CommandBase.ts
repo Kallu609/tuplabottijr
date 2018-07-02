@@ -41,12 +41,16 @@ export default class CommandBase {
     return newMessage as Message;
   }
 
-  onText(regexp: RegExp, callback: ((msg: Message, match: Array<string>) => void)): void {
+  onText(
+    regexp: RegExp,
+    callback: ((msg: Message, args: Array<string>, match?: RegExpExecArray | null) => void)
+  ): void {
+
     this.bot.onText(regexp, (msg, match) => {    
       if (this.disabled) return;
       
       const deltaMs = Date.now() - (msg.date * 1000);
-      
+
       if (deltaMs > config.commandTimeout) {
         return;
       }
@@ -69,7 +73,7 @@ export default class CommandBase {
         `Chat: ${ msg.chat.id }`
       );
 
-      callback(msg, args);
+      callback(msg, args, match);
     });
   }
 

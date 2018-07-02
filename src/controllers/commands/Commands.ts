@@ -8,3 +8,4 @@ export { default as traffic } from './TrafficCommand';
 export { default as weather } from './WeatherCommand';
 export { default as wolfram } from './WolframCommand';
 export { default as iban } from './IBANCommand';
+export { default as ruutu } from './RuutuListener';

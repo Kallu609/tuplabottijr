@@ -2,7 +2,7 @@ import config from '../../../config';
 import TuplabottiJr from '../../Bot';
 import CommandBase from './CommandBase';
 
-export default class EchoCommand extends CommandBase {
+export default class IBANCommand extends CommandBase {
   constructor(base: TuplabottiJr) {
     super(base);
     
