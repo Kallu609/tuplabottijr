@@ -81,18 +81,24 @@ export default class WeatherCommand extends CommandBase {
 
   async scheduleJob(): Promise<void> {
     for (const chatId of this.chatsEnabled) {
-      await this.sendMessage(chatId, '_Hyvää huomenta pojat :3_');
+      await this.sendMessage(chatId, '_Hyvää huomenta pojat :3_', {
+        disable_notification: true
+      });
 
       const response = await axios.get('http://thecatapi.com/api/images/get');
       const redirectUrl = response.request.res.responseUrl;
 
       await this.base.bot.sendPhoto(chatId, redirectUrl, {
-        caption: 'Tän päivän kissekuva'
+        caption: 'Tän päivän kissekuva',
+        disable_notification: true
       });
 
       await this.base.commands.traffic.sendTrafficCameras(chatId);
       const weatherReport = await this.api.getWeatherReport();
-      await this.sendMessage(chatId, weatherReport);
+
+      await this.sendMessage(chatId, weatherReport, {
+        disable_notification: true
+      });
     }
   }
 }

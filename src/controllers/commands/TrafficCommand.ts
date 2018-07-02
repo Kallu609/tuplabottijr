@@ -37,7 +37,9 @@ export default class TrafficCommand extends CommandBase {
         caption = `${trafficCamera.cityName}`;
       }
 
-      await this.bot.sendPhoto(chatId, trafficCamera.url, { caption });
+      await this.bot.sendPhoto(chatId, trafficCamera.url, {
+        caption, disable_notification: true
+      });
     }
   }
 }
