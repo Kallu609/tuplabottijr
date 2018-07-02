@@ -29,7 +29,7 @@ export default class RuutuListener extends CommandBase {
           disable_notification: true
         });
         
-        const response = `[⏯ Ruutuplayer](https://naftis.github.io/ruutuplayer/${videoId})\n` + 
+        const response = `[⏯ Ruutu-player](https://naftis.github.io/ruutuplayer/${videoId})\n` + 
                         `*${details.title}*\n\n${details.description}`;
         
         await this.sendMessage(msg.chat.id, response, {
