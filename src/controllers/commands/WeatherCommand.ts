@@ -96,9 +96,7 @@ export default class WeatherCommand extends CommandBase {
       await this.base.commands.traffic.sendTrafficCameras(chatId);
       const weatherReport = await this.api.getWeatherReport();
 
-      await this.sendMessage(chatId, weatherReport, {
-        disable_notification: true
-      });
+      await this.sendMessage(chatId, weatherReport);
     }
   }
 }
