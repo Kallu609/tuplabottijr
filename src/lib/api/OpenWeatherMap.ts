@@ -14,8 +14,18 @@ export default class OpenWeatherMap {
   }
 
   async getWeatherReport(): Promise<string> {
-    await this.getForecastTexts();
-    await this.getTemperatureTexts();
+    let tries = 0;
+
+    while (tries < 3) {
+      try {
+        await this.getForecastTexts();
+        await this.getTemperatureTexts();
+        break;
+      } catch (e) {
+        console.log(e);
+        tries++;
+      }
+    }
 
     return Object.keys(this.cities).map((name: string) => {
       const city = this.cities[name];
@@ -88,16 +98,17 @@ export default class OpenWeatherMap {
 
   private async getCityForecast(city: string): Promise<any> {
     const response = await axios.get(API_ENDPOINTS.forecast, {
-      params: {
-        q: city,
-        lang: 'fi',
-        units: 'metric',
-        mode: 'json',
-        appid: config.openWeatherMap.token
-      }
-    });
+        params: {
+          q: city,
+          lang: 'fi',
+          units: 'metric',
+          mode: 'json',
+          appid: config.openWeatherMap.token
+        }
+      });
 
     return response.data;
+    }
   }
 }
 
