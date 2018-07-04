@@ -108,7 +108,6 @@ export default class OpenWeatherMap {
       });
 
     return response.data;
-    }
   }
 }
 
