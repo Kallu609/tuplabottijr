@@ -1,3 +1,18 @@
+// Database
+interface IDatabase {
+  weatherCommand: {
+    chats: Array<IWeatherChat>
+  };
+}
+
+interface IWeatherChat {
+  chatId: number;
+  cities: Array<string>;
+  cameras?: Array<string>;
+  enabled: boolean;
+}
+
+// API
 interface IAPIList {
   [key: string]: any;
 }

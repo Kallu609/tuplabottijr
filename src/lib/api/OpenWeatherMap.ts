@@ -3,26 +3,27 @@ import config from '../../../config';
 
 const API_ENDPOINTS = {
   temperature: 'https://api.openweathermap.org/data/2.5/group',
-  forecast: 'http://api.openweathermap.org/data/2.5/forecast'
+  forecast: 'http://api.openweathermap.org/data/2.5/forecast',
+  weather: 'https://api.openweathermap.org/data/2.5/weather'
 };
 
 export default class OpenWeatherMap {
   cities: ICities;
 
-  constructor() {
+  async getWeatherReport(cities: Array<string>): Promise<string> {
     this.cities = {};
-  }
-
-  async getWeatherReport(): Promise<string> {
     let tries = 0;
 
     while (tries < 3) {
       try {
-        await this.getForecastTexts();
+        await this.getForecastTexts(cities);
         await this.getTemperatureTexts();
         break;
       } catch (e) {
-        console.log(e);
+        if (e.data.message === 'city not found') {
+          return '';
+        }
+        
         tries++;
       }
     }
@@ -35,9 +36,9 @@ export default class OpenWeatherMap {
     }).join('\n\n');
   }
   
-  private async getForecastTexts(): Promise<void> {
-    for (const city of config.openWeatherMap.cities) {
-      const forecastJson = await this.getCityForecast(city.name);
+  private async getForecastTexts(cities: Array<string>): Promise<void> {
+    for (const city of cities) {
+      const forecastJson = await this.getCityForecast(city);
       const forecasts = forecastJson.list.slice(0, config.openWeatherMap.weatherLinesCount - 1);
       
       const forecastLines = forecasts.map((forecast: any) => {
@@ -108,6 +109,31 @@ export default class OpenWeatherMap {
       });
 
     return response.data;
+  }
+
+  async validateCities(cities: Array<string>): Promise<Array<string>> {
+    const validCities: Array<string> = [];
+
+    for (const city of cities) {
+      try {
+        const response = await axios.get(API_ENDPOINTS.weather, {
+          params: {
+            q: city,
+            appid: config.openWeatherMap.token
+          }
+        });
+
+        const data = response.data;
+
+        if (data.cod === 200) {
+          validCities.push(data.name);
+        }
+      } catch (e) {
+        continue;
+      }
+    }
+
+    return validCities;
   }
 }
 

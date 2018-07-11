@@ -1,3 +1,4 @@
+import * as low from 'lowdb';
 import { Message } from 'node-telegram-bot-api';
 import * as TelegramBot from 'node-telegram-bot-api';
 import config from '../../../config';
@@ -6,6 +7,8 @@ import log from '../../lib/logging';
 
 export default class CommandBase {
   bot: TelegramBot;
+  db: IDatabase;
+
   name: string;
   helpText: string;
   helpArgs: string;
@@ -14,6 +17,7 @@ export default class CommandBase {
 
   constructor(public base: TuplabottiJr) {
     this.bot = base.bot;
+    this.db = base.database.db;
     this.hidden = false;
   }
   

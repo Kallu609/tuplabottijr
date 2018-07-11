@@ -7,10 +7,12 @@ import Schedules from './controllers/Schedules';
 import CryptoCompare from './lib/api/CryptoCompare';
 import OpenWeatherMap from './lib/api/OpenWeatherMap';
 import TrafficCamera from './lib/api/TrafficCamera';
+import Database from './lib/Database';
 import log from './lib/logging';
 
 export default class TuplabottiJr {
   bot: TelegramBot;
+  database: Database;
   commands: ICommandList;
   api: IAPIList;
   
@@ -23,6 +25,7 @@ export default class TuplabottiJr {
   }
 
   async init(): Promise<void> {
+    this.database = new Database();
     this.commands = {};
     
     this.api = {
@@ -36,7 +39,7 @@ export default class TuplabottiJr {
     this.create();
     this.start();
   }
-
+  
   start(): void {
     this.bot.startPolling();
     log.info('Bot started! :)');
