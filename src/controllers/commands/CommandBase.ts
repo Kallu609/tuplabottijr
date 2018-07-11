@@ -1,4 +1,3 @@
-import * as low from 'lowdb';
 import { Message } from 'node-telegram-bot-api';
 import * as TelegramBot from 'node-telegram-bot-api';
 import config from '../../../config';
