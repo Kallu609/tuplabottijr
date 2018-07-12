@@ -6,10 +6,12 @@ import logger from './logging';
 const DATABASE_FILE = path.join(__dirname, '../../database.json');
 
 const SCHEMA = {
-  weatherCommand: {
-    chats: []
-  }
+  chats: []
 };
+
+process.on('unhandledRejection', (reason, p) => {
+  console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
+});
 
 class Database {
   db: IDatabase;

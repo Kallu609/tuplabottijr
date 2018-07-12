@@ -21,7 +21,7 @@ export default class WeatherCommand extends CommandBase {
   }
 
   eventHandler(): void {
-    this.onText(/\/(sää|weather)/, async (msg, args) => {
+    this.onText(/^\/(sää|weather)/, async (msg, args) => {
       if (args.length === 0) {
         this.sendWeatherData(msg.chat.id);
         return;
@@ -36,16 +36,10 @@ export default class WeatherCommand extends CommandBase {
 
       if (args.length === 1 && arg === 'list') {
         const chat = this.getChat(msg.chat.id);
-        
-        if (chat) {
-          const joined = chat.cities.join('\n');
+        const joined = (chat && chat.weather.cities.length > 0) ? chat.weather.cities.join('\n') : 'None yet!';
 
-          this.sendMessage(msg.chat.id,
-            `*Active places for your chat*\n\`${ joined ? joined : 'None yet!' }\``
-          );
-
-          return;
-        }
+        this.sendMessage(msg.chat.id, `*Active places for your chat*\n\`${ joined }\``);
+        return;
       }
 
       if (args.length >= 2 && arg === 'add') {
@@ -58,12 +52,13 @@ export default class WeatherCommand extends CommandBase {
         }
 
         const chat = this.getChat(msg.chat.id);
+
         const newCities = validCities
-          .map(city => (!chat.cities.includes(city)) ? city : undefined)
+          .map(city => (!chat.weather.cities.includes(city)) ? city : undefined)
           .filter(city => city)
           .join('\n');
 
-        chat.cities = _.union(chat.cities, validCities);
+        chat.weather.cities = _.union(chat.weather.cities, validCities);
         
         if (newCities) {
           this.editMessage(tempMessage, `*Added these new places*\n\`${ newCities }\``);
@@ -77,10 +72,10 @@ export default class WeatherCommand extends CommandBase {
       if (args.length >= 2 && arg === 'remove') {
         const removals = args.slice(1).map(x => x.toLowerCase());
         const chat = this.getChat(msg.chat.id);
-        const citiesPrev = chat.cities;
+        const citiesPrev = chat.weather.cities;
 
-        chat.cities = chat.cities.filter(city => !removals.includes(city.toLowerCase()));
-        this.sendMessage(msg.chat.id, `Removed ${citiesPrev.length - chat.cities.length} places`);
+        chat.weather.cities = chat.weather.cities.filter(city => !removals.includes(city.toLowerCase()));
+        this.sendMessage(msg.chat.id, `Removed ${citiesPrev.length - chat.weather.cities.length} places`);
 
         return;
       }
@@ -102,23 +97,33 @@ export default class WeatherCommand extends CommandBase {
     });
   }
 
-  getChat(chatId: number): IWeatherChat {
-    return this.db.weatherCommand.chats.find(x => x.chatId === chatId) as IWeatherChat;
+  getChat(chatId: number): IDBChat {
+    const chat = _.find(this.db.chats, {chatId});
+
+    if (chat) {
+      return chat as IDBChat;
+    } else {
+      const newChat: IDBChat = {
+        chatId,
+        weather: {
+          cities: [],
+          enabled: false
+        }
+      };
+      
+      if (!this.db.chats) {
+        this.db.chats = [];
+      }
+
+      console.log(this.db);
+      this.db.chats.push(newChat);
+      return newChat;
+    }
   }
 
   setChatNotifications(chatId: number, state: boolean): void {
     const chat = this.getChat(chatId);
-    
-    if (chat) {
-      chat.enabled = state;
-    } else {
-      console.log(this.db.weatherCommand.chats);
-      this.db.weatherCommand.chats.push({
-        chatId,
-        cities: [],
-        enabled: state
-      });
-    }
+    chat.weather.enabled = state;
 
     this.sendMessage(chatId,
       (state) ?
@@ -132,8 +137,8 @@ export default class WeatherCommand extends CommandBase {
 
   async sendWeatherData(chatId: number): Promise<void> {
     const chat = this.getChat(chatId);
-    
-    if (!chat.cities.length) {
+  
+    if (!chat || chat.weather.cities.length === 0) {
       this.sendMessage(chatId, 'No places added!\nType \`/weather add <place>\` to add place.');
       return;
     }
@@ -141,8 +146,7 @@ export default class WeatherCommand extends CommandBase {
     const message = await this.sendMessage(chatId, 'Loading weather data...');
     
     try {
-      const weatherReport = await this.api.getWeatherReport(chat.cities);
-      debugger;
+      const weatherReport = await this.api.getWeatherReport(chat.weather.cities);
       this.editMessage(message, weatherReport);
     } catch (e) {
       this.editMessage(message, 'Could not load weather, please try again');
@@ -151,12 +155,14 @@ export default class WeatherCommand extends CommandBase {
 
   async scheduleJob(): Promise<void> {
     for (const chatId of this.chatsEnabled) {
+      const response = await axios.get('http://thecatapi.com/api/images/get');
+      const redirectUrl = response.request.res.responseUrl;
+      const chat = this.getChat(chatId);
+      const weatherReport = await this.api.getWeatherReport(chat.weather.cities);
+
       await this.sendMessage(chatId, '_Hyvää huomenta pojat :3_', {
         disable_notification: true
       });
-
-      const response = await axios.get('http://thecatapi.com/api/images/get');
-      const redirectUrl = response.request.res.responseUrl;
 
       await this.base.bot.sendPhoto(chatId, redirectUrl, {
         caption: 'Tän päivän kissekuva',
@@ -164,10 +170,6 @@ export default class WeatherCommand extends CommandBase {
       });
 
       await this.base.commands.traffic.sendTrafficCameras(chatId);
-      
-      const chat = this.getChat(chatId);
-      const weatherReport = await this.api.getWeatherReport(chat.cities);
-
       await this.sendMessage(chatId, weatherReport);
     }
   }

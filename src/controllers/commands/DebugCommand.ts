@@ -14,8 +14,8 @@ export default class DebugCommand extends CommandBase {
   
   eventHandler(): void {
     this.onText(/\/debug/, (msg, args) => {
-      const weatherChats = this.db.weatherCommand.chats;
-      const weatherChatIds = weatherChats.map((chat: IWeatherChat) => `${chat.chatId} (${chat.enabled})`);
+      const weatherChats = this.db.chats;
+      const weatherChatIds = weatherChats.map((chat: IDBChat) => `${chat.chatId} (${chat.weather.enabled})`);
 
       const debugText = this.buildDebugText({
         'Chat ID': msg.chat.id,
