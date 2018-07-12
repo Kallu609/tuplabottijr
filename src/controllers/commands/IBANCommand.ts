@@ -9,6 +9,10 @@ export default class IBANCommand extends CommandBase {
     this.name = 'iban';
     this.helpText = 'Shows IBAN numbers';
 
+    if (config.IBAN.split(';').length === 0) {
+      this.disabled = true;
+    }
+
     this.eventHandler();
   }
 

@@ -149,6 +149,7 @@ export default class WeatherCommand extends CommandBase {
       const weatherReport = await this.api.getWeatherReport(chat.weather.cities);
       this.editMessage(message, weatherReport);
     } catch (e) {
+      console.log(e);
       this.editMessage(message, 'Could not load weather, please try again');
     }
   }

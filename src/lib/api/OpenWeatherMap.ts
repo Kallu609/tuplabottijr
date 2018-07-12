@@ -20,7 +20,7 @@ export default class OpenWeatherMap {
         await this.getTemperatureTexts();
         break;
       } catch (e) {
-        if (e.data.message === 'city not found') {
+        if (e.data && e.data.message === 'city not found') {
           return '';
         }
         
