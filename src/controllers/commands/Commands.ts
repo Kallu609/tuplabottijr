@@ -9,3 +9,4 @@ export { default as weather } from './WeatherCommand';
 export { default as wolfram } from './WolframCommand';
 export { default as iban } from './IBANCommand';
 export { default as ruutu } from './RuutuListener';
+export { default as wiki } from './WikiCommand';

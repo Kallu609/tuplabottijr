@@ -25,6 +25,13 @@ export default class TuplabottiJr {
   }
 
   async init(): Promise<void> {
+    console.log(`
+█▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█
+█   ▀█▀ █ █ █▀█ █   █▀█ █▀▄ █▀█ ▀█▀ ▀█▀ █   █
+█    █  █ █ █▀▀ █   █▀█ █▀▄ █ █  █   █  █   █
+█    ▀  ▀▀▀ ▀   ▀▀▀ ▀ ▀ ▀▀  ▀▀▀  ▀   ▀  ▀   █
+▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+ `);
     this.database = new Database();
     this.commands = {};
     

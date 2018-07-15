@@ -1,5 +1,4 @@
 import TuplabottiJr from '../../Bot';
-import Database from '../../lib/Database';
 import CommandBase from './CommandBase';
 
 export default class EchoCommand extends CommandBase {

@@ -45,6 +45,7 @@ interface ICities {
 interface ITrafficCamera {
   url: string;
   timestamp?: number;
+  cameraName?: string;
   cityName?: string;
 }
 

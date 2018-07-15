@@ -1,3 +1,4 @@
+import config from '../../../config';
 import TuplabottiJr from '../../Bot';
 import TrafficCamera from '../../lib/api/TrafficCamera';
 import CommandBase from './CommandBase';
@@ -17,12 +18,17 @@ export default class TrafficCommand extends CommandBase {
 
   eventHandler(): void {
     this.onText(/\/traffic/, (msg, args) => {
+      if (args.length === 2) {
+        console.log('no voi kives');
+      }
+
       this.sendTrafficCameras(msg.chat.id);
     });
   }
 
   async sendTrafficCameras(chatId: number): Promise<void> {
-    const trafficCameras = await this.api.getTrafficCameras();
+    const cameraUrls = config.openWeatherMap.cities.map(city => city.cameraUrls[0]);
+    const trafficCameras = await this.api.getTrafficCameras(cameraUrls);
 
     for (const trafficCamera of trafficCameras) {
       let caption;

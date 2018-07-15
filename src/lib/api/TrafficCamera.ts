@@ -1,33 +1,26 @@
 import axios from 'axios';
-import { DateTime } from 'luxon';
 import config from '../../../config';
 
 export default class TrafficCamera {
-  async getTrafficCameras(): Promise<Array<ITrafficCamera>> {
-    const cities = config.openWeatherMap.cities;
+  async getTrafficCameras(cameraUrls: Array<string>): Promise<Array<ITrafficCamera>> {
+    const cameras = [];
 
-    const cameras =
-      (await Promise.all(cities.map(async (city): Promise<ITrafficCamera | undefined> => {
-        for (const cameraUrl of city.cameraUrls) {
-          if (cameraUrl.includes('kelikamerat.info')) {
-            try {
-              const camera = await this.parseKelikamerat(cameraUrl);
-              if (!camera) return;
-
-              return { ...camera, cityName: city.name };
-            } catch (e) {
-              console.log(`Error ${e.response.status}: ${cameraUrl}`);
-              return;
-            }
+    for (const cameraUrl of cameraUrls) {
+      if (cameraUrl.includes('kelikamerat.info')) {
+        try {
+          const camera = await this.parseKelikamerat(cameraUrl);
+          
+          if (camera) {
+            cameras.push(camera);
           }
-
-          // Camera URL is a static image, no parsing needed
-          return  { url: cameraUrl, cityName: city.name };
+        } catch (e) {
+          console.log(`Error ${e.response.status}: ${cameraUrl}`);
         }
-
-        return;
-      }))
-    ).filter(camera => camera);
+      } else {
+        // Camera URL is a static image, no parsing needed
+        cameras.push({ url: cameraUrl });
+      }
+    }
     
     return cameras as Array<ITrafficCamera>;
   }
@@ -42,7 +35,12 @@ export default class TrafficCamera {
 
     const url = matches[1].replace(/\\/g, '');
     const timestamp = Number(matches[2]);
-    const camera = { url, timestamp };
+    const cameraName = response.data
+      .split('<div class="bar-content-selected">')[1]
+      .split('</div>')[0].trim();
+    const cityName = cameraUrl.split('/')[5];
+    
+    const camera = { cameraName, cityName, url, timestamp };
 
     return camera;
   }
