@@ -17,7 +17,7 @@ export default class TrafficCommand extends CommandBase {
   }
 
   eventHandler(): void {
-    this.onText(/\/traffic/, (msg, args) => {
+    this.onText(/^\/traffic/, (msg, args) => {
       if (args.length === 2) {
         console.log('no voi kives');
       }

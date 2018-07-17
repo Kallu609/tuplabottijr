@@ -14,7 +14,7 @@ export default class WolframCommand extends CommandBase {
   }
 
   eventHandler(): void {
-    this.onText(/\/wolfram.*/, async (msg, args) => {
+    this.onText(/^\/wolfram.*/, async (msg, args) => {
       if (!args.length) {
         this.showHelp(msg.chat.id);
         return;

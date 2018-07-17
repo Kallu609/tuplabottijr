@@ -17,7 +17,7 @@ export default class IBANCommand extends CommandBase {
   }
 
   eventHandler(): void {
-    this.onText(/\/iban/, (msg, args) => {
+    this.onText(/^\/iban/, (msg, args) => {
       const chatId = msg.chat.id;
       const result = config.IBAN.split(';').map(item => {
         const splitted = item.split(':');

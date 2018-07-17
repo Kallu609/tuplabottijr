@@ -17,7 +17,7 @@ export default class NewsCommand extends CommandBase {
   }
 
   eventHandler(): void {
-    this.onText(/\/news/, async (msg, args) => {
+    this.onText(/^\/news/, async (msg, args) => {
       const stories = await this.api.pickRandomStories();
 
       const result = stories.map((story: IStory) => {

@@ -13,7 +13,7 @@ export default class EchoCommand extends CommandBase {
   }
 
   eventHandler(): void {
-    this.onText(/\/echo/, (msg, args) => {
+    this.onText(/^\/echo/, (msg, args) => {
       const chatId = msg.chat.id;
       this.sendMessage(chatId, 'Hello!');
     });
