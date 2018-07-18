@@ -14,7 +14,12 @@ export default class DebugCommand extends CommandBase {
   
   eventHandler(): void {
     this.onText(/^\/debug/, (msg, args) => {
-      const weatherChats = this.db.chats;
+      if (args.length === 1 && args[0] === 'schedule') {
+        this.base.commands.weather.scheduleJob();
+        return;
+      }
+
+      const weatherChats = this.db.get('chats').value();
       const weatherChatIds = weatherChats.map((chat: IDBChat) => `${chat.chatId} (${chat.weather.enabled})`);
 
       const debugText = this.buildDebugText({

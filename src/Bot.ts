@@ -12,7 +12,7 @@ import log from './lib/logging';
 
 export default class TuplabottiJr {
   bot: TelegramBot;
-  database: Database;
+  db: Database;
   commands: ICommandList;
   api: IAPIList;
   
@@ -21,10 +21,10 @@ export default class TuplabottiJr {
   messageOptions: SendMessageOptions;
 
   constructor() {
-    this.init();
+    this.initialize();
   }
 
-  async init(): Promise<void> {
+  async initialize(): Promise<void> {
     console.log(`
 █▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█
 █   ▀█▀ █ █ █▀█ █   █▀█ █▀▄ █▀█ ▀█▀ ▀█▀ █   █
@@ -32,17 +32,11 @@ export default class TuplabottiJr {
 █    ▀  ▀▀▀ ▀   ▀▀▀ ▀ ▀ ▀▀  ▀▀▀  ▀   ▀  ▀   █
 ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
  `);
-    this.database = new Database();
+
     this.commands = {};
-    
-    this.api = {
-      crypto: new CryptoCompare(),
-      weather: new OpenWeatherMap(),
-      trafficCamera: new TrafficCamera()
-    };
+    this.db = new Database();
 
-    await this.api.crypto.init();
-
+    await this.loadAPIs();
     this.create();
     this.start();
   }
@@ -56,6 +50,16 @@ export default class TuplabottiJr {
     this.bot.stopPolling();
     log.info('Bot stopped');
     process.exit();
+  }
+  
+  private async loadAPIs(): Promise<void> {
+    this.api = {
+      crypto: new CryptoCompare(),
+      weather: new OpenWeatherMap(),
+      trafficCamera: new TrafficCamera()
+    };
+
+    await this.api.crypto.init();
   }
 
   private eventHandler(): void {

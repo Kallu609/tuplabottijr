@@ -111,7 +111,7 @@ export default class OpenWeatherMap {
     return response.data;
   }
 
-  async validateCities(cities: Array<string>): Promise<Array<string>> {
+  async validatePlaces(cities: Array<string>): Promise<Array<string>> {
     const validCities: Array<string> = [];
 
     for (const city of cities) {

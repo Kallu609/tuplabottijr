@@ -1,5 +1,4 @@
 import axios from 'axios';
-import config from '../../../config';
 
 export default class TrafficCamera {
   async getTrafficCameras(cameraUrls: Array<string>): Promise<Array<ITrafficCamera>> {
@@ -8,13 +7,13 @@ export default class TrafficCamera {
     for (const cameraUrl of cameraUrls) {
       if (cameraUrl.includes('kelikamerat.info')) {
         try {
-          const camera = await this.parseKelikamerat(cameraUrl);
+          const camera = await this.parseKelikamerat(encodeURI(cameraUrl));
           
           if (camera) {
             cameras.push(camera);
           }
         } catch (e) {
-          console.log(`Error ${e.response.status}: ${cameraUrl}`);
+          console.log(`Error (Camera URL: ${cameraUrl}):\n${e}`);
         }
       } else {
         // Camera URL is a static image, no parsing needed
@@ -41,7 +40,6 @@ export default class TrafficCamera {
     const cityName = cameraUrl.split('/')[5];
     
     const camera = { cameraName, cityName, url, timestamp };
-
     return camera;
   }
 }

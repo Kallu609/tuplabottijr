@@ -1,17 +1,15 @@
 // Database
-interface IDatabase {
-  chats: Array<IDBChat>;
-}
-
 interface IDBChat {
   chatId: number;
-  weather: IDBWeatherCommand;
-}
 
-interface IDBWeatherCommand {
-  cameras?: Array<string>;
-  cities: Array<string>;
-  enabled: boolean;
+  weather: {
+    places: Array<string>;
+    enabled: boolean;
+  };
+
+  traffic: {
+    cameras: Array<ITrafficCamera>;
+  };
 }
 
 // API

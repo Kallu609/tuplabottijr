@@ -6,14 +6,13 @@ import CommandBase from './CommandBase';
 
 export default class WeatherCommand extends CommandBase {
   api: OpenWeatherMap;
-  chatsEnabled: Array<number>;
 
   constructor(base: TuplabottiJr) {
     super(base);
 
     this.name = 'weather';
     this.helpText = 'Show weather';
-    this.helpArgs = '[enable|disable] [list] [add <place>]';
+    this.helpArgs = '[enable|disable|list] [add|remove <place>]';
 
     this.api = this.base.api.weather;
 
@@ -36,47 +35,57 @@ export default class WeatherCommand extends CommandBase {
 
       if (args.length === 1 && arg === 'list') {
         const chat = this.getChat(msg.chat.id);
-        const joined = (chat && chat.weather.cities.length > 0) ? chat.weather.cities.join('\n') : 'None yet!';
+        const joined = (chat && chat.weather.places.length > 0) ? chat.weather.places.join('\n') : 'None yet!';
 
-        this.sendMessage(msg.chat.id, `*Active places for your chat*\n\`${ joined }\``);
+        this.sendMessage(msg.chat.id, `*Added places for this chat*\n\`${ joined }\``);
         return;
       }
 
       if (args.length >= 2 && arg === 'add') {
-        const cities = args.slice(1);
+        const places = args.slice(1);
         const tempMessage = await this.sendMessage(msg.chat.id, '_Validating places..._');
-        const validCities = await this.api.validateCities(cities);
+        const validPlaces = await this.api.validatePlaces(places);
         
-        if (!validCities.length) {
+        if (!validPlaces.length) {
+          this.editMessage(tempMessage, '❗️ No valid places');
           return;
         }
 
         const chat = this.getChat(msg.chat.id);
 
-        const newCities = validCities
-          .map(city => (!chat.weather.cities.includes(city)) ? city : undefined)
-          .filter(city => city)
-          .join('\n');
-
-        chat.weather.cities = _.union(chat.weather.cities, validCities);
+        const newPlaces = validPlaces
+          .map(place => !chat.weather.places.includes(place) ? place : undefined)
+          .filter(place => place);
         
-        if (newCities) {
-          this.editMessage(tempMessage, `*Added these new places*\n\`${ newCities }\``);
+        if (!newPlaces.length) {
+          this.editMessage(tempMessage,
+            `❗️ ${ places.length === 1 ? 'That place is' : 'Those places are' } already added`);
           return;
         }
-
-        this.editMessage(tempMessage, '❗️ No valid places');
+        
+        this.db.get('chats')
+          .find({ chatId: msg.chat.id })
+          .set('weather.places', _.union(chat.weather.places, newPlaces))
+          .write();
+          
+        this.editMessage(tempMessage, `*Added these new places*\n\`${ newPlaces.join('\n') }\``);
         return;
       }
 
       if (args.length >= 2 && arg === 'remove') {
         const removals = args.slice(1).map(x => x.toLowerCase());
         const chat = this.getChat(msg.chat.id);
-        const citiesPrev = chat.weather.cities;
+        const placesFiltered = chat.weather.places.filter(place => !removals.includes(place.toLowerCase()));
+        const removeCount = chat.weather.places.length - placesFiltered.length;
 
-        chat.weather.cities = chat.weather.cities.filter(city => !removals.includes(city.toLowerCase()));
-        this.sendMessage(msg.chat.id, `Removed ${citiesPrev.length - chat.weather.cities.length} places`);
-
+        this.db.get('chats')
+               .find({ chatId: msg.chat.id })
+               .set('weather.places', placesFiltered)
+               .write();
+        
+        this.sendMessage(msg.chat.id,
+          `Removed ${removeCount} place${ removeCount > 1 ? 's' : '' }`
+        );
         return;
       }
               
@@ -97,30 +106,6 @@ export default class WeatherCommand extends CommandBase {
     });
   }
 
-  getChat(chatId: number): IDBChat {
-    const chat = _.find(this.db.chats, {chatId});
-
-    if (chat) {
-      return chat as IDBChat;
-    } else {
-      const newChat: IDBChat = {
-        chatId,
-        weather: {
-          cities: [],
-          enabled: false
-        }
-      };
-      
-      if (!this.db.chats) {
-        this.db.chats = [];
-      }
-
-      console.log(this.db);
-      this.db.chats.push(newChat);
-      return newChat;
-    }
-  }
-
   setChatNotifications(chatId: number, state: boolean): void {
     const chat = this.getChat(chatId);
     chat.weather.enabled = state;
@@ -138,7 +123,7 @@ export default class WeatherCommand extends CommandBase {
   async sendWeatherData(chatId: number): Promise<void> {
     const chat = this.getChat(chatId);
   
-    if (!chat || chat.weather.cities.length === 0) {
+    if (!chat || chat.weather.places.length === 0) {
       this.sendMessage(chatId, 'No places added!\nType \`/weather add <place>\` to add place.');
       return;
     }
@@ -146,7 +131,7 @@ export default class WeatherCommand extends CommandBase {
     const message = await this.sendMessage(chatId, 'Loading weather data...');
     
     try {
-      const weatherReport = await this.api.getWeatherReport(chat.weather.cities);
+      const weatherReport = await this.api.getWeatherReport(chat.weather.places);
       this.editMessage(message, weatherReport);
     } catch (e) {
       console.log(e);
@@ -155,23 +140,30 @@ export default class WeatherCommand extends CommandBase {
   }
 
   async scheduleJob(): Promise<void> {
-    for (const chatId of this.chatsEnabled) {
+    const chats = this.db.get('chats').value() as Array<IDBChat>;
+
+    for (const chat of chats) {
+      if (!chat.weather.enabled) {
+        return;
+      }
+
       const response = await axios.get('http://thecatapi.com/api/images/get');
       const redirectUrl = response.request.res.responseUrl;
-      const chat = this.getChat(chatId);
-      const weatherReport = await this.api.getWeatherReport(chat.weather.cities);
 
-      await this.sendMessage(chatId, '_Hyvää huomenta pojat :3_', {
-        disable_notification: true
-      });
-
-      await this.base.bot.sendPhoto(chatId, redirectUrl, {
+      /*await this.base.bot.sendPhoto(chat.chatId, redirectUrl, {
         caption: 'Tän päivän kissekuva',
         disable_notification: true
-      });
-
-      await this.base.commands.traffic.sendTrafficCameras(chatId);
-      await this.sendMessage(chatId, weatherReport);
+      });*/
+      
+      if (chat.traffic.cameras.length) {
+        const cameraUrls = chat.traffic.cameras.map(camera => camera.url);
+        await this.base.commands.traffic.sendTrafficCameras(chat.chatId, cameraUrls);
+      }
+      
+      if (chat.weather.places.length) {
+        const weatherReport = await this.api.getWeatherReport(chat.weather.places);
+        await this.sendMessage(chat.chatId, weatherReport);
+      }
     }
   }
 }
